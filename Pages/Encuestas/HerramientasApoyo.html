@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herramientas de Apoyo para Tutorías - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+  </style>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+    function handleClientLoad() {
+      gapi.load('client:auth2', initClient);
+    }
+  
+    function initClient() {
+      gapi.client.init({
+        apiKey: 'YOUR_API_KEY',  // Reemplaza con tu API Key
+        clientId: 'YOUR_CLIENT_ID.apps.googleusercontent.com',  // Reemplaza con tu Client ID
+        scope: 'https://www.googleapis.com/auth/drive.file'
+      }).then(() => {
+        document.getElementById('botonGoogleDrive').onclick = handleAuthClick;
+      });
+    }
+  
+    function handleAuthClick() {
+      gapi.auth2.getAuthInstance().signIn().then(() => {
+        alert("Conectado a Google Drive correctamente.");
+      });
+    }
+  
+    gapi.load('client:auth2', handleClientLoad);
+  </script>
+  
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Herramientas de Apoyo para Tutorías</h1>
+  <p>Accede rápidamente a herramientas para almacenar y compartir documentos, y realizar videollamadas con los estudiantes.</p>
+
+  <!-- Accesos a Google Drive, OneDrive y Zoom -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Accesos Rápidos</h5>
+      <p>Inicia sesión y accede a tus herramientas preferidas para tutorías.</p>
+      <button class="btn btn-primary mb-2" id="botonGoogleDrive">Conectar con Google Drive</button>
+      <button class="btn btn-secondary mb-2" id="botonOneDrive">Conectar con OneDrive</button>
+      <button class="btn btn-info mb-2" id="botonZoom">Conectar con Zoom</button>
+    </div>
+  </div>
+
+  <!-- Gestión de archivos en la nube -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Gestión de Archivos</h5>
+      <p>Accede a tus carpetas de tutoría en la nube para cargar y compartir documentos con los estudiantes.</p>
+      <button class="btn btn-outline-primary" id="abrirGoogleDrive">Abrir carpeta de Google Drive</button>
+      <button class="btn btn-outline-secondary" id="abrirOneDrive">Abrir carpeta de OneDrive</button>
+    </div>
+  </div>
+
+  <!-- Programación de reuniones en Zoom -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Reuniones de Tutoría</h5>
+      <p>Programa o inicia una videollamada en Zoom para tus sesiones de tutoría.</p>
+      <button class="btn btn-info" id="programarReunionZoom">Programar Reunión en Zoom</button>
+      <button class="btn btn-info" id="iniciarReunionZoom">Iniciar Reunión en Zoom</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para manejar integraciones -->
+<script>
+  // Conexión simulada con Google Drive
+  document.getElementById('botonGoogleDrive').addEventListener('click', function() {
+    alert("Conectado con Google Drive (simulado).");
+  });
+
+  document.getElementById('abrirGoogleDrive').addEventListener('click', function() {
+    window.open('https://drive.google.com', '_blank');
+  });
+
+  // Conexión simulada con OneDrive
+  document.getElementById('botonOneDrive').addEventListener('click', function() {
+    alert("Conectado con OneDrive (simulado).");
+  });
+
+  document.getElementById('abrirOneDrive').addEventListener('click', function() {
+    window.open('https://onedrive.live.com', '_blank');
+  });
+
+  // Conexión simulada con Zoom
+  document.getElementById('botonZoom').addEventListener('click', function() {
+    alert("Conectado con Zoom (simulado).");
+  });
+
+  document.getElementById('programarReunionZoom').addEventListener('click', function() {
+    alert("Reunión programada en Zoom (simulado).");
+  });
+
+  document.getElementById('iniciarReunionZoom').addEventListener('click', function() {
+    alert("Iniciando reunión en Zoom (simulado).");
+  });
+</script>
+
+</body>
+</html>

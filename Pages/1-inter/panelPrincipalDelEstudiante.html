@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Estudiante - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .navbar-brand {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .main-content {
+      margin-top: 80px; /* Margen superior para no cubrir contenido con la navbar */
+      padding: 20px;
+    }
+    .card-custom {
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-custom:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Barra de navegación (Navbar) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#" id="nombreEstudiante">Estudiante</a> <!-- Aquí se puede reemplazar dinámicamente -->
+
+    <!-- Botón para pantallas pequeñas -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Enlaces de la barra de navegación -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Sesiones Programadas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Solicitar Tutoría</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Tutor Asignado</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Gestionar Perfil</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <div class="main-content">
+    <div class="container">
+      <h1>Bienvenido, Estudiante</h1>
+      <p>En este panel puedes ver y gestionar tus sesiones de tutoría.</p>
+
+      <!-- Tarjetas de acceso rápido a las funcionalidades -->
+      <div class="row">
+        <!-- Ver sesiones de tutoría programadas -->
+        <div class="col-md-4">
+          <div class="card card-custom mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Sesiones Programadas</h5>
+              <p class="card-text">Consulta las sesiones de tutoría que ya tienes programadas con tu tutor.</p>
+              <a href="#" class="btn btn-primary">Ver Sesiones</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solicitar una tutoría -->
+        <div class="col-md-4">
+          <div class="card card-custom mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Solicitar Tutoría</h5>
+              <p class="card-text">Solicita una nueva sesión de tutoría con un tutor disponible.</p>
+              <a href="#" class="btn btn-primary">Solicitar Tutoría</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ver detalles del tutor asignado -->
+        <div class="col-md-4">
+          <div class="card card-custom mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Detalles del Tutor Asignado</h5>
+              <p class="card-text">Consulta los detalles de tu tutor asignado y su información de contacto.</p>
+              <a href="#" class="btn btn-primary">Ver Tutor</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Gestión de Perfil -->
+        <div class="col-md-4">
+          <div class="card card-custom mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Gestionar Perfil</h5>
+              <p class="card-text">Actualiza tu información personal y académica.</p>
+              <a href="#" class="btn btn-primary">Editar Perfil</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Script para mostrar el nombre del estudiante -->
+  <script>
+    // Suponemos que el nombre del estudiante se guarda en localStorage
+    const nombreEstudiante = localStorage.getItem('nombreEstudiante') || 'Estudiante';  // Si no existe, muestra "Estudiante"
+    document.getElementById('nombreEstudiante').textContent = nombreEstudiante;
+  </script>
+
+</body>
+</html>
+<!--
+¿Qué más puedes hacer?
+Backend: Si tienes un sistema de backend, podrías conectar estas funcionalidades a un servidor para manejar datos de sesiones, tutorías, y perfiles.
+
+-->

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación de Tutorías - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+    .rating-stars {
+      font-size: 1.5rem;
+    }
+    .rating-stars span {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Evaluación de Tutorías</h1>
+  <p>Deja tu evaluación sobre la tutoría. Tu retroalimentación es importante para mejorar el servicio.</p>
+
+  <!-- Formulario de Evaluación -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Formulario de Evaluación</h5>
+      <form id="formEvaluacion">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="evaluador">Nombre del Evaluador</label>
+            <input type="text" class="form-control" id="evaluador" placeholder="Escribe tu nombre" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="rolEvaluador">Rol</label>
+            <select class="form-control" id="rolEvaluador">
+              <option value="Estudiante">Estudiante</option>
+              <option value="Tutor">Tutor</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Puntuación de la Tutoría</label>
+          <div class="rating-stars" id="ratingStars">
+            <span data-value="1">&#9733;</span>
+            <span data-value="2">&#9733;</span>
+            <span data-value="3">&#9733;</span>
+            <span data-value="4">&#9733;</span>
+            <span data-value="5">&#9733;</span>
+          </div>
+          <input type="hidden" id="puntuacion" value="0">
+        </div>
+        <div class="form-group">
+          <label for="comentario">Comentarios</label>
+          <textarea class="form-control" id="comentario" rows="3" placeholder="Deja tu comentario" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Evaluación</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista de Evaluaciones -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Evaluaciones Recibidas</h5>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Evaluador</th>
+            <th>Rol</th>
+            <th>Puntuación</th>
+            <th>Comentarios</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="listaEvaluaciones">
+          <!-- Aquí se cargarán dinámicamente las evaluaciones -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para manejar las evaluaciones -->
+<script>
+  // Simulación de datos de evaluaciones
+  let evaluaciones = [
+    { evaluador: 'Juan Pérez', rol: 'Estudiante', puntuacion: 5, comentario: 'Excelente tutoría, el tutor fue muy claro.', fecha: '2024-10-16' },
+    { evaluador: 'Laura Martínez', rol: 'Tutor', puntuacion: 4, comentario: 'Buen desempeño del estudiante, estuvo muy participativo.', fecha: '2024-10-15' }
+  ];
+
+  // Función para mostrar las evaluaciones en la tabla
+  function mostrarEvaluaciones() {
+    const listaEvaluaciones = document.getElementById('listaEvaluaciones');
+    listaEvaluaciones.innerHTML = ''; // Limpiar la tabla
+
+    evaluaciones.forEach(evaluacion => {
+      const fila = document.createElement('tr');
+      fila.innerHTML = `
+        <td>${evaluacion.evaluador}</td>
+        <td>${evaluacion.rol}</td>
+        <td>${evaluacion.puntuacion} / 5</td>
+        <td>${evaluacion.comentario}</td>
+        <td>${evaluacion.fecha}</td>
+      `;
+      listaEvaluaciones.appendChild(fila);
+    });
+  }
+
+  // Función para manejar la selección de estrellas
+  document.querySelectorAll('#ratingStars span').forEach(star => {
+    star.addEventListener('click', function() {
+      const rating = this.getAttribute('data-value');
+      document.getElementById('puntuacion').value = rating;
+
+      // Cambiar el color de las estrellas seleccionadas
+      document.querySelectorAll('#ratingStars span').forEach(s => s.style.color = 'black');
+      for (let i = 0; i < rating; i++) {
+        document.querySelectorAll('#ratingStars span')[i].style.color = 'gold';
+      }
+    });
+  });
+
+  // Función para agregar una nueva evaluación
+  document.getElementById('formEvaluacion').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Obtener los datos del formulario
+    const evaluacion = {
+      evaluador: document.getElementById('evaluador').value,
+      rol: document.getElementById('rolEvaluador').value,
+      puntuacion: document.getElementById('puntuacion').value,
+      comentario: document.getElementById('comentario').value,
+      fecha: new Date().toISOString().split('T')[0] // Fecha actual
+    };
+
+    // Agregar la evaluación al array
+    evaluaciones.push(evaluacion);
+
+    // Limpiar el formulario
+    document.getElementById('formEvaluacion').reset();
+    document.getElementById('puntuacion').value = 0;
+    document.querySelectorAll('#ratingStars span').forEach(s => s.style.color = 'black');
+
+    // Actualizar la tabla de evaluaciones
+    mostrarEvaluaciones();
+  });
+
+  // Mostrar las evaluaciones cuando cargue la página
+  mostrarEvaluaciones();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes y Estadísticas - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Reportes y Estadísticas</h1>
+  <p>Visualiza las estadísticas de uso de la plataforma, el rendimiento de los tutores, y la satisfacción de los estudiantes.</p>
+
+  <!-- Filtros para seleccionar el período de tiempo -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Filtros</h5>
+      <form id="formFiltros">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="mesSeleccionado">Seleccionar Mes</label>
+            <select class="form-control" id="mesSeleccionado">
+              <option value="01">Enero</option>
+              <option value="02">Febrero</option>
+              <option value="03">Marzo</option>
+              <!-- Agregar todos los meses -->
+              <option value="12">Diciembre</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="anoSeleccionado">Seleccionar Año</label>
+            <select class="form-control" id="anoSeleccionado">
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reporte de estadísticas de uso -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Estadísticas de Uso</h5>
+      <canvas id="graficoTutoriasMes" width="400" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Reporte de rendimiento de tutores -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Rendimiento de los Tutores</h5>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Tutor</th>
+            <th>Tutorías Realizadas</th>
+            <th>Calificación Promedio</th>
+          </tr>
+        </thead>
+        <tbody id="listaRendimientoTutores">
+          <!-- Aquí se cargarán dinámicamente los tutores -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Reporte de satisfacción de estudiantes -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Satisfacción de los Estudiantes</h5>
+      <canvas id="graficoSatisfaccion" width="400" height="200"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Chart.js para los gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // Datos de simulación para las estadísticas de uso
+  const tutoriasPorMes = [12, 19, 23, 14, 25, 18, 15, 20, 30, 22, 17, 13];  // Tutorías por cada mes
+
+  // Crear el gráfico de tutorías por mes
+  const ctxTutorias = document.getElementById('graficoTutoriasMes').getContext('2d');
+  const graficoTutoriasMes = new Chart(ctxTutorias, {
+    type: 'bar',
+    data: {
+      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      datasets: [{
+        label: 'Tutorías Completadas',
+        data: tutoriasPorMes,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Datos de simulación para rendimiento de tutores
+  const tutores = [
+    { nombre: 'Laura Martínez', tutorias: 35, calificacion: 4.8 },
+    { nombre: 'Carlos Pérez', tutorias: 22, calificacion: 4.5 },
+    { nombre: 'Ana Gómez', tutorias: 28, calificacion: 4.7 }
+  ];
+
+  // Mostrar rendimiento de tutores en la tabla
+  function mostrarRendimientoTutores() {
+    const listaTutores = document.getElementById('listaRendimientoTutores');
+    listaTutores.innerHTML = ''; // Limpiar la tabla
+
+    tutores.forEach(tutor => {
+      const fila = document.createElement('tr');
+      fila.innerHTML = `
+        <td>${tutor.nombre}</td>
+        <td>${tutor.tutorias}</td>
+        <td>${tutor.calificacion} / 5</td>
+      `;
+      listaTutores.appendChild(fila);
+    });
+  }
+
+  // Datos de simulación para la satisfacción de los estudiantes
+  const calificacionesSatisfaccion = [5, 4, 3, 5, 4, 5, 5, 3, 4, 5];  // Calificaciones de satisfacción
+
+  // Crear el gráfico de satisfacción de los estudiantes
+  const ctxSatisfaccion = document.getElementById('graficoSatisfaccion').getContext('2d');
+  const graficoSatisfaccion = new Chart(ctxSatisfaccion, {
+    type: 'doughnut',
+    data: {
+      labels: ['5 Estrellas', '4 Estrellas', '3 Estrellas', '2 Estrellas', '1 Estrella'],
+      datasets: [{
+        label: 'Calificaciones de Satisfacción',
+        data: [calificacionesSatisfaccion.filter(c => c === 5).length,
+               calificacionesSatisfaccion.filter(c => c === 4).length,
+               calificacionesSatisfaccion.filter(c => c === 3).length,
+               calificacionesSatisfaccion.filter(c => c === 2).length,
+               calificacionesSatisfaccion.filter(c => c === 1).length],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)'
+        ],
+        borderWidth: 1
+      }]
+    }
+  });
+
+  // Función para aplicar los filtros de mes y año (simulada)
+  document.getElementById('formFiltros').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const mes = document.getElementById('mesSeleccionado').value;
+    const ano = document.getElementById('anoSeleccionado').value;
+    alert(`Filtros aplicados para el mes ${mes} y el año ${ano}.`);
+    // Aquí puedes hacer una solicitud al backend para filtrar los datos.
+  });
+
+  // Cargar datos iniciales
+  mostrarRendimientoTutores();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+/* Variables de color */
+:root {
+    --color-rojo-suave: #E57373;
+    --color-blanco: #FFFFFF;
+    --color-gris-claro: #F5F5F5;
+    --color-gris-oscuro: #616161;
+    --color-azul-palido: #BBDEFB;
+    --color-verde-menta: #A5D6A7;
+    --color-morado-lavanda: #CE93D8;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-blanco);
+    color: var(--color-gris-oscuro);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--color-rojo-suave);
+    color: var(--color-blanco);
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: var(--color-blanco);
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+section {
+    padding: 20px;
+}
+
+.hero {
+    background-color: var(--color-azul-palido);
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features ul li {
+    background-color: var(--color-verde-menta);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: var(--color-rojo-suave);
+    color: var(--color-blanco);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-gris-oscuro);
+}
+
+.form-section {
+    background-color: var(--color-gris-claro);
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    border-radius: 8px;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--color-gris-oscuro);
+    border-radius: 5px;
+}
+
+.dashboard {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--color-gris-claro);
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+}
+
+.link-secondary {
+    color: var(--color-morado-lavanda);
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Estilos para el menú lateral */
+.sidebar {
+    height: 100%;
+    width: 0; /* Inicialmente está colapsado */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--color-gris-oscuro);
+    overflow-x: hidden;
+    transition: 0.5s; /* Transición suave al abrir/cerrar */
+    padding-top: 60px; /* Espaciado para el contenido */
+}
+
+.sidebar a {
+    padding: 10px 15px; /* Espaciado de los enlaces */
+    text-decoration: none;
+    font-size: 18px;
+    color: var(--color-blanco);
+    display: block; /* Los enlaces ocupan toda la línea */
+    transition: 0.3s; /* Transición suave al pasar el mouse */
+}
+
+.sidebar a:hover {
+    background-color: var(--color-rojo-suave); /* Color de fondo al pasar el mouse */
+    color: var(--color-blanco);
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left 0.5s; /* Transición suave al mover el contenido */
+    padding: 16px; /* Espaciado para el contenido principal */
+}
+
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: var(--color-gris-oscuro);
+    color: var(--color-blanco);
+    padding: 10px 15px;
+    border: none;
+}
+
+.openbtn:hover {
+    background-color: var(--color-rojo-suave); /* Color de fondo al pasar el mouse */
+}

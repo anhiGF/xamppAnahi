@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Materiales de Apoyo - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .file-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Gestión de Materiales de Apoyo</h1>
+  <p>Sube, descarga y comparte materiales de apoyo para las tutorías.</p>
+
+  <!-- Formulario para cargar materiales -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Subir Material de Apoyo</h5>
+      <form id="formSubirMaterial" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="nombreMaterial">Nombre del Material</label>
+          <input type="text" class="form-control" id="nombreMaterial" placeholder="Escribe un nombre para el material" required>
+        </div>
+        <div class="form-group">
+          <label for="archivoMaterial">Seleccionar Archivo</label>
+          <input type="file" class="form-control-file" id="archivoMaterial" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Subir Material</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista de materiales -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Materiales de Apoyo</h5>
+      <ul class="list-group" id="listaMateriales">
+        <!-- Aquí se mostrarán los archivos subidos -->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para gestionar materiales de apoyo -->
+<script>
+  const materiales = [];
+
+  // Función para mostrar materiales en la lista
+  function mostrarMateriales() {
+    const listaMateriales = document.getElementById('listaMateriales');
+    listaMateriales.innerHTML = ''; // Limpiar la lista
+
+    materiales.forEach((material, index) => {
+      const item = document.createElement('li');
+      item.className = 'list-group-item file-list-item';
+      item.innerHTML = `
+        <span>${material.nombre}</span>
+        <div>
+          <button class="btn btn-success btn-sm" onclick="descargarMaterial(${index})">Descargar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarMaterial(${index})">Eliminar</button>
+          <button class="btn btn-info btn-sm" onclick="compartirMaterial(${index})">Compartir</button>
+        </div>
+      `;
+      listaMateriales.appendChild(item);
+    });
+  }
+
+  // Función para subir material de apoyo
+  document.getElementById('formSubirMaterial').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombreMaterial').value;
+    const archivo = document.getElementById('archivoMaterial').files[0];
+    if (!archivo) {
+      alert('Selecciona un archivo.');
+      return;
+    }
+
+    // Agregar el archivo al array de materiales
+    materiales.push({ nombre, archivo });
+    mostrarMateriales();
+    alert(`Material "${nombre}" subido con éxito.`);
+
+    // Limpiar el formulario
+    document.getElementById('formSubirMaterial').reset();
+  });
+
+  // Función para descargar material de apoyo
+  function descargarMaterial(index) {
+    const material = materiales[index];
+    const url = URL.createObjectURL(material.archivo);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = material.nombre;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Función para eliminar material de apoyo
+  function eliminarMaterial(index) {
+    const nombre = materiales[index].nombre;
+    materiales.splice(index, 1);
+    mostrarMateriales();
+    alert(`Material "${nombre}" eliminado.`);
+  }
+
+  // Función para compartir enlace del material
+  function compartirMaterial(index) {
+    const material = materiales[index];
+    const url = URL.createObjectURL(material.archivo);
+    alert(`Enlace para compartir "${material.nombre}": ${url}`);
+  }
+</script>
+
+</body>
+</html>
+<!--// Subir material al backend
+document.getElementById('formSubirMaterial').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const nombre = document.getElementById('nombreMaterial').value;
+  const archivo = document.getElementById('archivoMaterial').files[0];
+  const formData = new FormData();
+  formData.append('nombre', nombre);
+  formData.append('archivo', archivo);
+
+  const response = await fetch('/api/subir-material', {
+    method: 'POST',
+    body: formData
+  });
+  
+  if (response.ok) {
+    alert(`Material "${nombre}" subido con éxito al servidor.`);
+    // Actualizar la lista de materiales desde el backend
+  }
+});
+-->

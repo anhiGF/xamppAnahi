@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplo MooTools Completo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/mootools/1.6.0/mootools.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .gallery img { width: 100px; height: 100px; margin: 5px; cursor: pointer; }
+    .hidden { display: none; }
+    .modal { background: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; }
+    .modal-content { background: white; padding: 20px; border-radius: 5px; }
+    #drag-box { width: 200px; height: 200px; background-color: lightblue; margin: 20px; cursor: move; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    #pagination { margin: 20px 0; }
+  </style>
+</head>
+<body>
+
+  <h1>Ejemplo Completo con MooTools</h1>
+
+  <!-- 1. Animaciones Básicas -->
+  <h2>1. Animaciones Básicas</h2>
+  <div id="animateBox" style="width: 100px; height: 100px; background-color: coral;"></div>
+  <button id="animateBtn">Animar</button>
+
+  <!-- 2. Manipulación de DOM -->
+  <h2>2. Manipulación de DOM</h2>
+  <button id="domBtn">Agregar Elemento</button>
+  <div id="domContainer"></div>
+
+  <!-- 3. Efectos de Transición -->
+  <h2>3. Efectos de Transición</h2>
+  <button id="transitionBtn">Transición</button>
+  <div id="transitionBox" style="width: 100px; height: 100px; background-color: lightgreen;"></div>
+
+  <!-- 4. Formulario Interactivo -->
+  <h2>4. Formulario Interactivo</h2>
+  <form id="myForm">
+    <input type="text" id="name" placeholder="Nombre">
+    <input type="email" id="email" placeholder="Correo">
+    <button type="submit">Enviar</button>
+  </form>
+  <div id="formMessage"></div>
+
+  <!-- 5. Crear una Galería de Imágenes -->
+  <h2>5. Galería de Imágenes</h2>
+  <div class="gallery">
+    <img src="https://via.placeholder.com/100" alt="Image 1">
+    <img src="https://via.placeholder.com/100" alt="Image 2">
+    <img src="https://via.placeholder.com/100" alt="Image 3">
+  </div>
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <img id="modalImage" src="" alt="Imagen Modal">
+    </div>
+  </div>
+
+  <!-- 6. Aplicación de Paginación -->
+  <h2>6. Paginación</h2>
+  <div id="pagination">
+    <span class="page-link" data-page="1">1</span>
+    <span class="page-link" data-page="2">2</span>
+    <span class="page-link" data-page="3">3</span>
+  </div>
+  <div id="pageContent">Contenido de la página 1</div>
+
+  <!-- 7. Modales y Ventanas Emergentes -->
+  <h2>7. Modales y Ventanas Emergentes</h2>
+  <button id="openModalBtn">Abrir Modal</button>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModalBtn">&times;</span>
+      <p>Esto es una ventana modal.</p>
+    </div>
+  </div>
+
+  <!-- 8. Interacción con AJAX -->
+  <h2>8. Interacción con AJAX</h2>
+  <button id="loadDataBtn">Cargar Datos</button>
+  <div id="ajaxContent"></div>
+
+  <!-- 9. Drag and Drop -->
+  <h2>9. Drag and Drop</h2>
+  <div id="drag-box">Arrástrame</div>
+
+  <!-- 10. Tabs Interactivos -->
+  <h2>10. Tabs Interactivos</h2>
+  <ul>
+    <li><a href="#" class="tab-link" data-tab="1">Tab 1</a></li>
+    <li><a href="#" class="tab-link" data-tab="2">Tab 2</a></li>
+    <li><a href="#" class="tab-link" data-tab="3">Tab 3</a></li>
+  </ul>
+  <div id="tab-1" class="tab-content active">Contenido del Tab 1</div>
+  <div id="tab-2" class="tab-content">Contenido del Tab 2</div>
+  <div id="tab-3" class="tab-content">Contenido del Tab 3</div>
+
+  <script>
+    // 1. Animaciones Básicas
+    $('animateBtn').addEvent('click', function() {
+      $('animateBox').tween('width', '200px');
+    });
+
+    // 2. Manipulación de DOM
+    $('domBtn').addEvent('click', function() {
+      new Element('div', { html: 'Nuevo Elemento Agregado' }).inject($('domContainer'));
+    });
+
+    // 3. Efectos de Transición
+    $('transitionBtn').addEvent('click', function() {
+      $('transitionBox').morph({ 'width': '200px', 'background-color': '#FF6347' });
+    });
+
+    // 4. Formulario Interactivo
+    $('myForm').addEvent('submit', function(e) {
+      e.preventDefault();
+      var name = $('name').value;
+      var email = $('email').value;
+      $('formMessage').set('html', 'Nombre: ' + name + '<br>Correo: ' + email);
+    });
+
+    // 5. Galería de Imágenes
+    $$('.gallery img').addEvent('click', function() {
+      var src = this.get('src');
+      $('modalImage').set('src', src);
+      $('imageModal').setStyle('display', 'flex');
+    });
+
+    $('imageModal').addEvent('click', function() {
+      this.setStyle('display', 'none');
+    });
+
+    // 6. Aplicación de Paginación
+    $$('.page-link').addEvent('click', function() {
+      var page = this.get('data-page');
+      $('pageContent').set('html', 'Contenido de la página ' + page);
+    });
+
+    // 7. Modales y Ventanas Emergentes
+    $('openModalBtn').addEvent('click', function() {
+      $('myModal').setStyle('display', 'flex');
+    });
+
+    $('closeModalBtn').addEvent('click', function() {
+      $('myModal').setStyle('display', 'none');
+    });
+
+    $('myModal').addEvent('click', function(e) {
+      if (e.target == this) {
+        this.setStyle('display', 'none');
+      }
+    });
+
+    // 8. Interacción con AJAX
+    $('loadDataBtn').addEvent('click', function() {
+      new Request({
+        url: 'https://jsonplaceholder.typicode.com/posts/1',
+        method: 'get',
+        onSuccess: function(responseText) {
+          var data = JSON.decode(responseText);
+          $('ajaxContent').set('html', '<h3>' + data.title + '</h3><p>' + data.body + '</p>');
+        }
+      }).send();
+    });
+
+    // 9. Drag and Drop
+    new Drag.Move($('drag-box'));
+
+    // 10. Tabs Interactivos
+    $$('.tab-link').addEvent('click', function(e) {
+      e.preventDefault();
+      var tabId = this.get('data-tab');
+      $$('.tab-content').removeClass('active');
+      $('tab-' + tabId).addClass('active');
+    });
+  </script>
+
+</body>
+</html>
