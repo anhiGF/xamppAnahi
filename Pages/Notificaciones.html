@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de Notificaciones</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .notification-card {
+            border: none;
+            border-left: 4px solid #007bff;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .notification-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .notification-date {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .notification-content {
+            margin-top: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4 text-center">Notificaciones</h2>
+
+        <!-- Filtro de Notificaciones (Opcional) -->
+        <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-outline-primary me-2">Todos</button>
+            <button class="btn btn-outline-primary me-2">Avisos</button>
+            <button class="btn btn-outline-primary">Recordatorios</button>
+        </div>
+
+        <!-- Lista de Notificaciones -->
+        <div class="notification-card bg-light p-3 rounded">
+            <div class="notification-title">Aviso de Mantenimiento</div>
+            <div class="notification-date">24 Octubre 2024</div>
+            <div class="notification-content">
+                El sistema estará en mantenimiento el próximo viernes de 1:00 am a 3:00 am. Por favor, planifique en consecuencia.
+            </div>
+        </div>
+
+        <div class="notification-card bg-light p-3 rounded">
+            <div class="notification-title">Recordatorio de Pago</div>
+            <div class="notification-date">22 Octubre 2024</div>
+            <div class="notification-content">
+                Recuerde realizar el pago de su suscripción antes de fin de mes para evitar la suspensión del servicio.
+            </div>
+        </div>
+
+        <div class="notification-card bg-light p-3 rounded">
+            <div class="notification-title">Nuevo Mensaje Importante</div>
+            <div class="notification-date">20 Octubre 2024</div>
+            <div class="notification-content">
+                Ha recibido un mensaje importante de su tutor. Por favor revise la sección de mensajes para más detalles.
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>

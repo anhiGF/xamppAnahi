@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de SECCIONES de Tutorías - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Gestión de secciones de Tutorías</h1>
+  <p>Organiza y gestiona las secciones de tus tutorías para diferentes grupos de estudiantes.</p>
+
+  <!-- Formulario para agregar o editar contenido -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Agregar/Editar Seccion de Tutoría</h5>
+      <form id="formContenido">
+        <div class="form-group">
+          <label for="grupoEstudiante">Grupo o Estudiante</label>
+          <input type="text" class="form-control" id="grupoEstudiante" placeholder="Nombre del grupo o estudiante" required>
+        </div>
+        <div class="form-group">
+          <label for="tituloContenido">Título de la tutoria</label>
+          <input type="text" class="form-control" id="tituloContenido" placeholder="Título del tema o módulo" required>
+        </div>
+        <div class="form-group">
+          <label for="descripcionContenido">Descripción</label>
+          <textarea class="form-control" id="descripcionContenido" rows="3" placeholder="Descripción del contenido" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista de contenidos organizados -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Secciones de Tutoría</h5>
+      <div id="listaContenidos">
+        <!-- Aquí se mostrarán los contenidos -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Historial de modificaciones -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Historial de Modificaciones</h5>
+      <div id="historialModificaciones">
+        <!-- Aquí se mostrará el historial de modificaciones -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para gestionar contenidos de tutoría -->
+<script>
+  const contenidos = [];
+  const historial = [];
+
+  // Función para mostrar la lista de contenidos
+  function mostrarContenidos() {
+    const listaContenidos = document.getElementById('listaContenidos');
+    listaContenidos.innerHTML = ''; // Limpiar lista
+
+    contenidos.forEach((contenido, index) => {
+      const item = document.createElement('div');
+      item.classList.add('mb-3', 'p-3', 'border', 'rounded');
+      item.innerHTML = `
+        <h6>${contenido.titulo} - ${contenido.grupo}</h6>
+        <p>${contenido.descripcion}</p>
+        <button class="btn btn-warning btn-sm" onclick="editarContenido(${index})">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="eliminarContenido(${index})">Eliminar</button>
+      `;
+      listaContenidos.appendChild(item);
+    });
+  }
+
+  // Función para mostrar el historial de modificaciones
+  function mostrarHistorial() {
+    const historialModificaciones = document.getElementById('historialModificaciones');
+    historialModificaciones.innerHTML = '';
+
+    historial.forEach(entry => {
+      const item = document.createElement('div');
+      item.classList.add('mb-2');
+      item.innerHTML = `<p><strong>${entry.accion}:</strong> ${entry.detalles} (${entry.fecha})</p>`;
+      historialModificaciones.appendChild(item);
+    });
+  }
+
+  // Función para agregar o editar contenido
+  document.getElementById('formContenido').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const grupo = document.getElementById('grupoEstudiante').value;
+    const titulo = document.getElementById('tituloContenido').value;
+    const descripcion = document.getElementById('descripcionContenido').value;
+
+    const contenidoExistente = contenidos.findIndex(contenido => contenido.titulo === titulo && contenido.grupo === grupo);
+    if (contenidoExistente >= 0) {
+      // Editar contenido existente
+      contenidos[contenidoExistente] = { grupo, titulo, descripcion };
+      historial.push({ accion: 'Editado', detalles: `Contenido "${titulo}" del grupo ${grupo}`, fecha: new Date().toLocaleString() });
+    } else {
+      // Agregar nuevo contenido
+      contenidos.push({ grupo, titulo, descripcion });
+      historial.push({ accion: 'Agregado', detalles: `Contenido "${titulo}" para el grupo ${grupo}`, fecha: new Date().toLocaleString() });
+    }
+
+    mostrarContenidos();
+    mostrarHistorial();
+    document.getElementById('formContenido').reset();
+  });
+
+  // Función para editar contenido
+  function editarContenido(index) {
+    const contenido = contenidos[index];
+    document.getElementById('grupoEstudiante').value = contenido.grupo;
+    document.getElementById('tituloContenido').value = contenido.titulo;
+    document.getElementById('descripcionContenido').value = contenido.descripcion;
+  }
+
+  // Función para eliminar contenido
+  function eliminarContenido(index) {
+    const contenido = contenidos[index];
+    contenidos.splice(index, 1);
+    historial.push({ accion: 'Eliminado', detalles: `Contenido "${contenido.titulo}" del grupo ${contenido.grupo}`, fecha: new Date().toLocaleString() });
+    mostrarContenidos();
+    mostrarHistorial();
+  }
+</script>
+
+</body>
+</html>
+<!--appi
+// Crear o actualizar contenido
+app.post('/api/contenido', (req, res) => {
+  const contenido = req.body;
+  // Guardar o actualizar en la base de datos
+  res.json({ message: 'Contenido guardado o actualizado' });
+});
+
+// Obtener lista de contenidos
+app.get('/api/contenidos', (req, res) => {
+  // Consultar contenidos en la base de datos
+  res.json(contenidos);
+});
+
+// Eliminar contenido
+app.delete('/api/contenido/:id', (req, res) => {
+  const id = req.params.id;
+  // Eliminar contenido de la base de datos
+  res.json({ message: 'Contenido eliminado' });
+});
+-->

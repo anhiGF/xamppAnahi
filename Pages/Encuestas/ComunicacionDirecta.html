@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunicación Directa - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .chat-box {
+      height: 300px;
+      overflow-y: scroll;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #ffffff;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+    .message.sent {
+      background-color: #d1e7dd;
+      text-align: right;
+    }
+    .message.received {
+      background-color: #f8d7da;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Comunicación Directa (Tutores-Estudiantes)</h1>
+  <p>Envía mensajes a tus estudiantes o tutores para mantener una comunicación directa antes y después de las sesiones de tutoría.</p>
+
+  <!-- Selección de contactos -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Contactos</h5>
+      <select class="form-control" id="contactoSeleccionado">
+        <option value="estudiante1">Estudiante 1</option>
+        <option value="estudiante2">Estudiante 2</option>
+        <option value="estudiante3">Estudiante 3</option>
+        <!-- Añadir más contactos según sea necesario -->
+      </select>
+    </div>
+  </div>
+
+  <!-- Caja de mensajes -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Chat</h5>
+      <div class="chat-box" id="chatBox">
+        <!-- Mensajes aparecerán aquí -->
+      </div>
+      <div class="input-group mt-3">
+        <input type="text" class="form-control" placeholder="Escribe un mensaje..." id="mensajeInput">
+        <div class="input-group-append">
+          <button class="btn btn-primary" id="enviarMensaje">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opciones de integración externa -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Opciones de Notificación</h5>
+      <p>Envíale una notificación al contacto seleccionado en WhatsApp o a su correo electrónico.</p>
+      <button class="btn btn-success" id="notificarWhatsApp">Notificar en WhatsApp</button>
+      <button class="btn btn-secondary" id="enviarEmail">Enviar Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para gestionar el chat y las notificaciones -->
+<script>
+  const mensajes = [];
+
+  // Función para mostrar mensajes en el chat
+  function mostrarMensajes() {
+    const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML = ''; // Limpiar el chat
+
+    mensajes.forEach(msg => {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', msg.tipo);
+      messageElement.textContent = msg.texto;
+      chatBox.appendChild(messageElement);
+    });
+
+    // Desplazarse al último mensaje
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  // Función para enviar mensaje
+  document.getElementById('enviarMensaje').addEventListener('click', function() {
+    const mensajeInput = document.getElementById('mensajeInput');
+    const texto = mensajeInput.value;
+
+    if (texto.trim() === '') return; // Evitar enviar mensajes vacíos
+
+    // Agregar el mensaje al array y mostrarlo
+    mensajes.push({ texto, tipo: 'sent' });
+    mostrarMensajes();
+
+    // Limpiar el input
+    mensajeInput.value = '';
+  });
+
+  // Función para notificar en WhatsApp
+  document.getElementById('notificarWhatsApp').addEventListener('click', function() {
+    const contacto = document.getElementById('contactoSeleccionado').value;
+    const mensaje = encodeURIComponent("¡Tienes un nuevo mensaje en la plataforma de tutorías!");
+    const url = `https://wa.me/?text=${mensaje}`;
+    window.open(url, '_blank');
+  });
+
+  // Función para enviar email
+  document.getElementById('enviarEmail').addEventListener('click', function() {
+    const contacto = document.getElementById('contactoSeleccionado').value;
+    alert(`Se enviará un email de notificación al contacto seleccionado (${contacto}).`);
+  });
+</script>
+
+</body>
+</html>
+<!--// Backend en Node.js
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+io.on('connection', (socket) => {
+  console.log('Usuario conectado');
+
+  socket.on('enviarMensaje', (mensaje) => {
+    io.emit('recibirMensaje', mensaje); // Enviar mensaje a todos los usuarios conectados
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Usuario desconectado');
+  });
+});
+
+server.listen(3000, () => console.log('Servidor en puerto 3000'));
+-->

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservación de Tutorías - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .available-slot {
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .available-slot:hover {
+      background-color: #d1e7dd;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Reservación de Tutorías</h1>
+  <p>Selecciona un horario disponible para reservar una sesión de tutoría.</p>
+
+  <!-- Selección de tutor -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Seleccionar Tutor</h5>
+      <select class="form-control" id="seleccionTutor">
+        <option value="tutor1">Tutor 1 - Juan Pérez</option>
+        <option value="tutor2">Tutor 2 - María González</option>
+        <!-- Otros tutores -->
+      </select>
+    </div>
+  </div>
+
+  <!-- Vista de disponibilidad -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Disponibilidad Semanal</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+          </tr>
+        </thead>
+        <tbody id="tablaDisponibilidad">
+          <!-- Disponibilidad de horarios por día -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Confirmación de reserva -->
+  <div id="confirmacionReserva" class="alert alert-success d-none">
+    ¡Reservación exitosa! Has reservado una sesión para el <span id="fechaReserva"></span> a las <span id="horaReserva"></span>.
+  </div>
+
+  <!-- Lista de reservas del estudiante -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Mis Reservas</h5>
+      <ul class="list-group" id="listaReservas">
+        <li class="list-group-item">No tienes reservas.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para gestionar la reservación de tutorías -->
+<script>
+  const disponibilidadTutores = {
+    tutor1: {
+      lunes: [{ hora: "10:00", disponible: true }, { hora: "14:00", disponible: true }],
+      martes: [{ hora: "10:00", disponible: false }, { hora: "15:00", disponible: true }],
+      miércoles: [{ hora: "11:00", disponible: true }],
+      jueves: [{ hora: "12:00", disponible: true }],
+      viernes: [{ hora: "13:00", disponible: true }]
+    },
+    tutor2: {
+      lunes: [{ hora: "09:00", disponible: true }],
+      martes: [{ hora: "14:00", disponible: true }],
+      miércoles: [{ hora: "16:00", disponible: true }],
+      jueves: [{ hora: "10:00", disponible: false }],
+      viernes: [{ hora: "11:00", disponible: true }]
+    }
+  };
+  
+  const reservasEstudiante = [];
+
+  // Mostrar disponibilidad según el tutor seleccionado
+  function mostrarDisponibilidad() {
+    const tablaDisponibilidad = document.getElementById('tablaDisponibilidad');
+    tablaDisponibilidad.innerHTML = ''; // Limpiar tabla
+
+    const tutorSeleccionado = document.getElementById('seleccionTutor').value;
+    const disponibilidad = disponibilidadTutores[tutorSeleccionado];
+
+    for (let hora = 8; hora <= 18; hora++) {
+      const fila = document.createElement('tr');
+      fila.innerHTML = `<td>${hora}:00</td>`;
+
+      ["lunes", "martes", "miércoles", "jueves", "viernes"].forEach(dia => {
+        const celda = document.createElement('td');
+        const slot = disponibilidad[dia]?.find(h => h.hora === `${hora}:00`);
+
+        if (slot && slot.disponible) {
+          celda.classList.add('available-slot');
+          celda.textContent = "Disponible";
+          celda.onclick = () => reservarHorario(dia, `${hora}:00`);
+        } else {
+          celda.textContent = slot ? "Reservado" : "";
+          celda.classList.add(slot ? "text-muted" : "");
+        }
+        fila.appendChild(celda);
+      });
+
+      tablaDisponibilidad.appendChild(fila);
+    }
+  }
+
+  // Función para reservar un horario
+  function reservarHorario(dia, hora) {
+    const tutorSeleccionado = document.getElementById('seleccionTutor').value;
+    disponibilidadTutores[tutorSeleccionado][dia] = disponibilidadTutores[tutorSeleccionado][dia].map(h =>
+      h.hora === hora ? { ...h, disponible: false } : h
+    );
+
+    // Agregar la reserva al estudiante
+    reservasEstudiante.push({ tutor: tutorSeleccionado, dia, hora });
+    mostrarReservas();
+    mostrarDisponibilidad();
+
+    // Confirmación de reserva
+    document.getElementById('fechaReserva').textContent = dia;
+    document.getElementById('horaReserva').textContent = hora;
+    document.getElementById('confirmacionReserva').classList.remove('d-none');
+  }
+
+  // Mostrar lista de reservas del estudiante
+  function mostrarReservas() {
+    const listaReservas = document.getElementById('listaReservas');
+    listaReservas.innerHTML = ''; // Limpiar lista
+
+    if (reservasEstudiante.length === 0) {
+      listaReservas.innerHTML = '<li class="list-group-item">No tienes reservas.</li>';
+    } else {
+      reservasEstudiante.forEach(reserva => {
+        const item = document.createElement('li');
+        item.classList.add('list-group-item');
+        item.textContent = `Tutor: ${reserva.tutor}, Día: ${reserva.dia}, Hora: ${reserva.hora}`;
+        listaReservas.appendChild(item);
+      });
+    }
+  }
+
+  // Actualizar la disponibilidad cuando se selecciona un tutor
+  document.getElementById('seleccionTutor').addEventListener('change', mostrarDisponibilidad);
+
+  // Inicializar vista con el tutor seleccionado
+  mostrarDisponibilidad();
+</script>
+
+</body>
+</html>

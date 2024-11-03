@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes y Resultados de Tutorías</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js (para gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilos personalizados */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1100px;
+            margin-top: 30px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .stat-card {
+            background-color: #f1f8ff;
+            border: none;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4 text-center">Reportes y Resultados de Tutorías</h2>
+
+        <!-- Filtros de Reportes -->
+        <div class="mb-4">
+            <h5>Filtros de Reportes</h5>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="periodo" class="form-label">Período</label>
+                    <select class="form-select" id="periodo">
+                        <option selected>Selecciona...</option>
+                        <option>Última semana</option>
+                        <option>Último mes</option>
+                        <option>Último trimestre</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="tipo_reporte" class="form-label">Tipo de Reporte</label>
+                    <select class="form-select" id="tipo_reporte">
+                        <option selected>Selecciona...</option>
+                        <option>Tutorías realizadas</option>
+                        <option>Niveles de satisfacción</option>
+                        <option>Tutores activos</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3 d-flex align-items-end">
+                    <button class="btn btn-primary w-100">Generar Reporte</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indicadores Clave -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div>Total de Tutorías</div>
+                    <h4>120</h4>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div>Promedio de Satisfacción</div>
+                    <h4>4.8 / 5</h4>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div>Estudiantes Activos</div>
+                    <h4>85</h4>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div>Tutores Activos</div>
+                    <h4>15</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfica de Reportes -->
+        <div class="mb-4">
+            <h5>Gráfica de Reportes</h5>
+            <canvas id="reportChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Tabla de Detalles del Reporte -->
+        <div>
+            <h5>Detalles del Reporte</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Tutor</th>
+                        <th>Estudiante</th>
+                        <th>Duración</th>
+                        <th>Satisfacción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>24 Oct 2024</td>
+                        <td>Juan Pérez</td>
+                        <td>María López</td>
+                        <td>1 hr</td>
+                        <td>5/5</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>23 Oct 2024</td>
+                        <td>Ana García</td>
+                        <td>Luis Rojas</td>
+                        <td>1.5 hr</td>
+                        <td>4/5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+    <!-- Script para la Gráfica (Chart.js) -->
+    <script>
+        const ctx = document.getElementById('reportChart').getContext('2d');
+        const reportChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                datasets: [{
+                    label: 'Tutorías Realizadas',
+                    data: [30, 40, 25, 25],
+                    backgroundColor: '#007bff',
+                    borderColor: '#007bff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

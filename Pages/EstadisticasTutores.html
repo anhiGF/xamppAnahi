@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estadísticas Personales del Tutor - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-4">Estadísticas Personales del Tutor</h1>
+  <p>Visualiza un resumen de tu actividad como tutor en la plataforma.</p>
+
+  <!-- Resumen de estadísticas -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Resumen de Actividad</h5>
+      <div class="row">
+        <div class="col-md-4">
+          <p><strong>Tutorías Impartidas:</strong> <span id="totalTutorias">-</span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Tiempo Total Empleado:</strong> <span id="tiempoTotal">-</span> horas</p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Nivel Promedio de Satisfacción:</strong> <span id="satisfaccionPromedio">-</span>/5</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfica de satisfacción -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Gráfica de Satisfacción de Estudiantes</h5>
+      <canvas id="graficoSatisfaccion" width="400" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- Historial de sesiones -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Historial de Sesiones</h5>
+      <ul class="list-group" id="listaSesiones">
+        <li class="list-group-item">No hay sesiones registradas.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para gestionar estadísticas -->
+<script>
+  const estadisticasTutor = {
+    tutorias: [
+      { fecha: "2023-10-10", duracion: 1, satisfaccion: 4 },
+      { fecha: "2023-10-12", duracion: 1.5, satisfaccion: 5 },
+      { fecha: "2023-10-14", duracion: 2, satisfaccion: 3 }
+    ]
+  };
+
+  // Función para mostrar el resumen de estadísticas
+  function mostrarResumen() {
+    const totalTutorias = estadisticasTutor.tutorias.length;
+    const tiempoTotal = estadisticasTutor.tutorias.reduce((acc, tutoria) => acc + tutoria.duracion, 0);
+    const satisfaccionPromedio = (estadisticasTutor.tutorias.reduce((acc, tutoria) => acc + tutoria.satisfaccion, 0) / totalTutorias).toFixed(1);
+
+    document.getElementById('totalTutorias').textContent = totalTutorias;
+    document.getElementById('tiempoTotal').textContent = tiempoTotal;
+    document.getElementById('satisfaccionPromedio').textContent = satisfaccionPromedio;
+  }
+
+  // Función para mostrar el gráfico de satisfacción
+  function mostrarGraficoSatisfaccion() {
+    const labels = estadisticasTutor.tutorias.map(tutoria => tutoria.fecha);
+    const datosSatisfaccion = estadisticasTutor.tutorias.map(tutoria => tutoria.satisfaccion);
+
+    const ctx = document.getElementById('graficoSatisfaccion').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Satisfacción del Estudiante',
+          data: datosSatisfaccion,
+          borderColor: '#36a2eb',
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          y: { beginAtZero: true, max: 5 }
+        }
+      }
+    });
+  }
+
+  // Función para mostrar el historial de sesiones
+  function mostrarHistorialSesiones() {
+    const listaSesiones = document.getElementById('listaSesiones');
+    listaSesiones.innerHTML = ''; // Limpiar lista
+
+    if (estadisticasTutor.tutorias.length === 0) {
+      listaSesiones.innerHTML = '<li class="list-group-item">No hay sesiones registradas.</li>';
+    } else {
+      estadisticasTutor.tutorias.forEach(sesion => {
+        const item = document.createElement('li');
+        item.classList.add('list-group-item');
+        item.innerHTML = `
+          <h6>Fecha: ${sesion.fecha}</h6>
+          <p><strong>Duración:</strong> ${sesion.duracion} horas</p>
+          <p><strong>Satisfacción:</strong> ${sesion.satisfaccion} / 5</p>
+        `;
+        listaSesiones.appendChild(item);
+      });
+    }
+  }
+
+  // Cargar estadísticas iniciales
+  mostrarResumen();
+  mostrarGraficoSatisfaccion();
+  mostrarHistorialSesiones();
+</script>
+
+</body>
+</html>
+<!--// Endpoint para obtener estadísticas de un tutor
+app.get('/api/estadisticas/:tutorId', (req, res) => {
+  const tutorId = req.params.tutorId;
+  // Consultar estadísticas del tutor en la base de datos
+  res.json(estadisticas);
+});
+
+// Endpoint para registrar una nueva sesión de tutoría
+app.post('/api/sesion', (req, res) => {
+  const sesion = req.body;
+  // Guardar sesión en la base de datos
+  res.json({ message: 'Sesión registrada' });
+});
+-->
