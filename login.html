@@ -1,14 +1,13 @@
-<!-- Formulario de inicio de sesión en login.html -->
-<h5 class="modal-title" id="myModalLabel">Inicio de seccion</h5>
+<h5 class="modal-title" id="myModalLabel">Inicio de sesión</h5>
 <div class="modal-body">
-  <form>
+  <form method="POST" action="login.php">
     <div class="form-group">
       <label for="emailLogin">Correo electrónico</label>
-      <input type="email" class="form-control" id="emailLogin" placeholder="Correo electrónico">
+      <input type="email" class="form-control" name="correo_electronico" id="emailLogin" placeholder="Correo electrónico" required>
     </div>
     <div class="form-group">
       <label for="passwordLogin">Contraseña</label>
-      <input type="password" class="form-control" id="passwordLogin" placeholder="Contraseña">
+      <input type="password" class="form-control" name="contraseña" id="passwordLogin" placeholder="Contraseña" required>
     </div>
     <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
     <!-- Enlace para recuperar la contraseña -->

@@ -1,146 +1,64 @@
 <h5 class="modal-title" id="myModalLabel">Registro Estudiantes</h5>
 <div class="modal-body">
-    <form id="registroForm">
+    <form id="registroForm" action="registro_estudiante.php" method="POST">
         <!-- Número de Control -->
         <div class="form-group">
             <label for="numControl">Número de Control</label>
-            <input type="text" class="form-control" id="numControl" placeholder="Número de Control" required>
+            <input type="text" class="form-control" id="numControl" name="num_control" placeholder="Número de Control" required>
         </div>
-        
+
         <!-- Nombre -->
         <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
         </div>
-        
+
         <!-- Primer Apellido -->
         <div class="form-group">
             <label for="primerApellido">Primer Apellido</label>
-            <input type="text" class="form-control" id="primerApellido" placeholder="Primer Apellido" required>
+            <input type="text" class="form-control" id="primerApellido" name="primer_apellido" placeholder="Primer Apellido" required>
         </div>
-        
+
         <!-- Segundo Apellido -->
         <div class="form-group">
             <label for="segundoApellido">Segundo Apellido</label>
-            <input type="text" class="form-control" id="segundoApellido" placeholder="Segundo Apellido">
-        </div>
-        
-        <!-- Correo Electrónico -->
-        <div class="form-group">
-             <label for="emailEstudiante">Correo electrónico institucional</label>
-             <input type="email" class="form-control" id="emailEstudiante" name="correo_electronico" placeholder="tucorreo@tecjerez.edu.mx" required>
+            <input type="text" class="form-control" id="segundoApellido" name="segundo_apellido" placeholder="Segundo Apellido">
         </div>
 
-        
+        <!-- Correo Electrónico -->
+        <div class="form-group">
+            <label for="emailEstudiante">Correo electrónico institucional</label>
+            <input type="email" class="form-control" id="emailEstudiante" name="correo_electronico" placeholder="tucorreo@tecjerez.edu.mx" required>
+        </div>
+
         <!-- Contraseña -->
         <div class="form-group">
             <label for="passwordEstudiante">Contraseña</label>
-            <input type="password" class="form-control" id="passwordEstudiante" placeholder="Contraseña" required>
+            <input type="password" class="form-control" id="passwordEstudiante" name="contraseña" placeholder="Contraseña" required>
         </div>
-        
+
         <!-- Confirmar Contraseña -->
         <div class="form-group">
             <label for="confirmPasswordEstudiante">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="confirmPasswordEstudiante" placeholder="Confirmar contraseña" required>
+            <input type="password" class="form-control" id="confirmPasswordEstudiante" name="confirmar_contraseña" placeholder="Confirmar contraseña" required>
         </div>
-        
+
         <!-- Semestre -->
         <div class="form-group">
             <label for="semestre">Semestre</label>
-            <input type="number" class="form-control" id="semestre" placeholder="Semestre" min="1" max="12">
+            <input type="number" class="form-control" id="semestre" name="semestre" placeholder="Semestre" min="1" max="12">
         </div>
-        
+
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
             <label for="fechaNac">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" id="fechaNac">
+            <input type="date" class="form-control" id="fechaNac" name="fecha_nac">
         </div>
-        
+
         <!-- Tipo de Usuario (oculto, ya que es solo para estudiantes) -->
-        <input type="hidden" id="tipoUsuario" value="Estudiante">
-        
+        <input type="hidden" id="tipoUsuario" name="tipo_usuario" value="Estudiante">
+
         <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
     </form>
 </div>
-<script>
-  document.getElementById("registroForm").addEventListener("submit", function(event) {
-      // Prevenir el envío del formulario de forma predeterminada
-      event.preventDefault();
-      
-      // Obtener valores de los campos
-      const numControl = document.getElementById("numControl").value.trim();
-      const nombre = document.getElementById("nombre").value.trim();
-      const primerApellido = document.getElementById("primerApellido").value.trim();
-      const segundoApellido = document.getElementById("segundoApellido").value.trim();
-      const email = document.getElementById("emailEstudiante").value.trim();
-      const password = document.getElementById("passwordEstudiante").value;
-      const confirmPassword = document.getElementById("confirmPasswordEstudiante").value;
-      const semestre = document.getElementById("semestre").value.trim();
-      const fechaNac = document.getElementById("fechaNac").value;
-      const tipoUsuario = "Estudiante";
-  
-      // Validaciones 
-  // Validar número de control
-  if (isNaN(numControl) || numControl === "") {
-        alert("El número de control debe ser un número.");
-        return;
-    }
 
-    // Validar campos obligatorios
-    if (!nombre || !primerApellido || !email || !password || !confirmPassword) {
-        alert("Por favor, complete todos los campos obligatorios.");
-        return;
-    }
-
-    // Validar formato de correo electrónico
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@tecjerez.edu.mx$/;
-    if (!emailPattern.test(email)) {
-        alert("Ingrese un correo electrónico válido de la institución (@tecjerez.edu.mx).");
-        return;
-    }
-
-    // Validar confirmación de contraseña
-    if (password !== confirmPassword) {
-        alert("Las contraseñas no coinciden.");
-        return;
-    }
-
-    // Validar semestre (si fue ingresado)
-    if (semestre && (isNaN(semestre) || semestre < 1 || semestre > 13)) {
-        alert("El semestre debe ser un número entre 1 y 13.");
-        return;
-    }
-
-    // Validación exitosa
-    alert("Validacion exitosa!");
-
-
-      // Si las validaciones pasan, preparar los datos para enviar
-      const formData = new FormData();
-      formData.append("num_control", numControl);
-      formData.append("nombre", nombre);
-      formData.append("primer_apellido", primerApellido);
-      formData.append("segundo_apellido", segundoApellido);
-      formData.append("correo_electronico", email);
-      formData.append("contraseña", password);
-      formData.append("semestre", semestre);
-      formData.append("fecha_nac", fechaNac);
-      formData.append("tipo_usuario", tipoUsuario);
-  
-      // Enviar los datos a través de AJAX
-      fetch("https://anahitecjerez.wuaze.com/Scripts/backend/registro.php", {
-    method: "POST",
-    body: formData
-    })
-
-      .then(response => response.text())
-      .then(data => {
-          alert(data); // Muestra el mensaje de éxito o error del servidor
-      })
-      .catch(error => {
-          console.error("Error:", error);
-          alert("Hubo un error al procesar el registro.");
-      });
-  });
-  </script>
-  
