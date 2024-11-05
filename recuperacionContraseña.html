@@ -1,28 +1,10 @@
 <h5 class="modal-title" id="myModalLabel">Recuperar Contraseña</h5>
-
 <div class="modal-body">
-  <form>
+  <form id="formRecuperacion" action="recuperar_contraseña.php" method="POST">
     <div class="form-group">
       <label for="emailRecuperacion">Correo electrónico</label>
-      <input type="email" class="form-control" id="emailRecuperacion" placeholder="Ingresa tu correo electrónico">
+      <input type="email" class="form-control" id="emailRecuperacion" name="correo_electronico" placeholder="Ingresa tu correo electrónico" required>
     </div>
     <button type="submit" class="btn btn-primary btn-block">Enviar enlace de recuperación</button>
   </form>
 </div>
-
-<!---<script>
-    $('#formRecuperarContraseña').on('submit', function(e) {
-  e.preventDefault();
-  
-  const email = $('#emailRecuperacion').val();
-  
-  // Aquí podrías enviar la solicitud AJAX a tu backend para que envíe el correo
-  if (email) {
-    alert('Se ha enviado un enlace de recuperación a ' + email);
-    $('#modalRecuperarContraseña').modal('hide');
-  } else {
-    alert('Por favor, ingresa un correo electrónico válido.');
-  }
-});
-
-</script>  --->
