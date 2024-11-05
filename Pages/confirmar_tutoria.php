@@ -1,9 +1,11 @@
 <?php
+session_start();
 include("conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_tutoria'])) {
     $id_tutoria = intval($_POST['id_tutoria']);
     $sql = "UPDATE Tutoria SET estado = 'Completada' WHERE id_tutoria = ?";
+    $usuario_id = $_SESSION['num_control'];
     
     if ($stmt = $conexion->prepare($sql)) {
         $stmt->bind_param("i", $id_tutoria);

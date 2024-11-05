@@ -53,7 +53,10 @@
           <a class="nav-link" href="#">Reserva de Tutoría</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Mis Sesiones</a>
+          <a class="nav-link" href="#listaTutorias">Mis Sesiones BCC</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#historialModificaciones">Historial Modificacion</a>
         </li>
       </ul>
     </div>
@@ -77,13 +80,11 @@
                   <input type="time" class="form-control" id="horaTutoria" name="hora" required>
               </div>
               <div class="form-group col-md-4">
-                  <label for="tutorAsignado">Tutor Asignado</label>
-                  <select class="form-control" id="tutorAsignado" name="id_tutor">
-                      <option value="1">Tutor 1</option>
-                      <option value="2">Tutor 2</option>
-                      <option value="3">Tutor 3</option>
-                  </select>
-              </div>
+                <label for="tutorAsignado">Tutor Asignado</label>
+                <select class="form-control" id="tutorAsignado" name="id_tutor" required>
+                  <!-- Las opciones de tutor se cargarán aquí con JavaScript -->
+                </select>
+              </div>              
           </div>
           <div class="form-group">
               <label for="temaTutoria">Tema de la Tutoría</label>
@@ -100,7 +101,7 @@
     </div>
 
     <!-- Consulta de Tutorías con búsqueda -->
-    <div class="card mb-4">
+    <div class="card mb-4" id="listaTutorias">
       <div class="card-body">
         <h5 class="card-title">Lista de Tutorías</h5>
         
@@ -359,6 +360,29 @@ function cargarHistorial(idTutoria) {
       console.error("Error al cargar el historial de modificaciones:", error);
     });
 }
+// Función para cargar los tutores en el select de "Tutor Asignado"
+function cargarTutores() {
+  fetch('obtener_tutores.php')
+    .then(response => response.json())
+    .then(tutores => {
+      const selectTutor = document.getElementById('tutorAsignado');
+      selectTutor.innerHTML = ''; // Limpiar opciones previas
+
+      // Agregar una opción para cada tutor obtenido
+      tutores.forEach(tutor => {
+        const option = document.createElement('option');
+        option.value = tutor.num_control; // Usar el número de control como valor
+        option.textContent = `${tutor.nombre} ${tutor.primer_apellido} ${tutor.segundo_apellido || ''}`;
+        selectTutor.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error("Error al cargar tutores:", error);
+    });
+}
+
+// Llama a cargarTutores al cargar la página
+document.addEventListener("DOMContentLoaded", cargarTutores);
 
 </script>
 <!-- Modal para Editar Tutoría -->
