@@ -1,3 +1,4 @@
+
 <!DOCTYPE html> 
 <html lang="es">
 <head>
@@ -15,7 +16,7 @@
       font-weight: bold;
     }
     .main-content {
-      margin-top: 80px; /* Margen superior para evitar solapar con la navbar */
+      margin-top: 80px; 
       padding: 20px;
     }
     .card-custom {
@@ -82,7 +83,7 @@
               <div class="form-group col-md-4">
                 <label for="tutorAsignado">Tutor Asignado</label>
                 <select class="form-control" id="tutorAsignado" name="id_tutor" required>
-                  <!-- Las opciones de tutor se cargarán aquí con JavaScript -->
+                 
                 </select>
               </div>              
           </div>
@@ -105,7 +106,6 @@
       <div class="card-body">
         <h5 class="card-title">Lista de Tutorías</h5>
         
-        <!-- Campo de búsqueda -->
       <div class="form-inline mb-3">
         <input class="form-control mr-2" id="buscarTutoria" placeholder="Buscar tutoría..." oninput="buscarTutorias()">
       </div>
@@ -125,7 +125,7 @@
             </tr>
           </thead>
           <tbody id="tablaSesiones">
-            <!-- Aquí se cargarán dinámicamente las sesiones -->
+            
           </tbody>
          
         </table>
@@ -137,7 +137,7 @@
       <div class="card-body">
         <h5 class="card-title">Historial de Modificaciones</h5>
         <div id="historialModificaciones">
-          <!-- Aquí se mostrará el historial de modificaciones -->
+          
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@ function cargarTutorias() {
     .then(response => response.json())
     .then(tutorias => {
       const tabla = document.getElementById('tablaSesiones');
-      tabla.innerHTML = ''; // Limpia la tabla antes de llenarla
+      tabla.innerHTML = ''; 
 
       tutorias.forEach(tutoria => {
         const fila = `
@@ -174,7 +174,7 @@ function cargarTutorias() {
         `;
         tabla.insertAdjacentHTML('beforeend', fila);
       });
-       // Llama a buscarTutorias() para filtrar resultados si hay algo escrito en la caja de búsqueda
+       
         buscarTutorias();
     })
     .catch(error => {
@@ -183,34 +183,26 @@ function cargarTutorias() {
     });
 }
 
-
-
-// Llama a cargarTutorias al cargar la página
 document.addEventListener("DOMContentLoaded", cargarTutorias);
 
 function reservarTutoria(event) {
-  // Previene el envío predeterminado del formulario
+
   event.preventDefault();
 
-  // Crea un objeto FormData con los datos del formulario
   const formData = new FormData(document.getElementById('formReservarTutoria'));
 
-  // Envía los datos mediante fetch a reservar_tutoria.php
   fetch('reservar_tutoria.php', {
     method: 'POST',
     body: formData
   })
   .then(response => response.text())
   .then(result => {
-    console.log("Resultado de la reserva:", result); // Verifica el resultado de la reserva
+    console.log("Resultado de la reserva:", result); 
 
-    // Llama a la función cargarTutorias para actualizar la tabla
     cargarTutorias();
 
-    // Opcional: muestra un mensaje de éxito o error
     alert("Tutoría reservada con éxito");
     
-    // Limpia el formulario después de enviar
     document.getElementById('formReservarTutoria').reset();
   })
   .catch(error => {
@@ -219,24 +211,20 @@ function reservarTutoria(event) {
   });
 }
 function buscarTutorias() {
-  // Obtiene el valor ingresado en la caja de búsqueda y lo convierte a minúsculas
   const input = document.getElementById('buscarTutoria').value.toLowerCase();
   const filas = document.getElementById('tablaSesiones').getElementsByTagName('tr');
 
-  // Recorre todas las filas de la tabla
   for (let i = 0; i < filas.length; i++) {
     const celdas = filas[i].getElementsByTagName('td');
     let encontrado = false;
 
-    // Recorre todas las celdas de la fila actual
     for (let j = 0; j < celdas.length; j++) {
       if (celdas[j] && celdas[j].innerText.toLowerCase().includes(input)) {
-        encontrado = true; // Si encuentra coincidencia, marca la fila como encontrada
+        encontrado = true; 
         break;
       }
     }
 
-    // Muestra u oculta la fila según si se encontró coincidencia
     filas[i].style.display = encontrado ? '' : 'none';
   }
 }
@@ -250,7 +238,7 @@ function confirmarSesion(idTutoria) {
   .then(result => {
     console.log(result);
     alert("Tutoría confirmada.");
-    cargarTutorias(); // Recargar la tabla para reflejar el cambio
+    cargarTutorias(); 
     cargarHistorial(idTutoria);
   })
   .catch(error => {
@@ -268,7 +256,7 @@ function cancelarSesion(idTutoria) {
   .then(result => {
     console.log(result);
     alert("Tutoría cancelada.");
-    cargarTutorias(); // Recargar la tabla para reflejar el cambio
+    cargarTutorias(); 
     cargarHistorial(idTutoria);
   })
   .catch(error => {
@@ -277,23 +265,19 @@ function cancelarSesion(idTutoria) {
 }
 
 function editarTutoria(idTutoria) {
-  // Buscar los datos de la tutoría por su ID y cargarlos en el modal
   fetch(`obtener_tutoria.php?id_tutoria=${idTutoria}`)
     .then(response => response.json())
     .then(tutoria => {
-      // Llenar los campos del modal con los datos de la tutoría
       document.getElementById('editarIdTutoria').value = tutoria.id_tutoria;
       document.getElementById('editarTitulo').value = tutoria.titulo;
       document.getElementById('editarDescripcion').value = tutoria.descripcion;
       document.getElementById('editarFecha').value = tutoria.fecha;
       document.getElementById('editarHora').value = tutoria.hora;
       cargarHistorial(idTutoria);
-      // Mostrar el modal
       $('#editarModal').modal('show');
     })
     .catch(error => console.error('Error al obtener los datos de la tutoría:', error));
 }
-
 
 function eliminarTutoria(idTutoria) {
   if (confirm("¿Estás seguro de que deseas eliminar esta tutoría?")) {
@@ -314,7 +298,6 @@ function eliminarTutoria(idTutoria) {
   }
 }
 function guardarCambiosTutoria() {
-  // Obtener los datos del formulario
   const formData = new FormData(document.getElementById('formEditarTutoria'));
 
   fetch('editar_tutoria.php', {
@@ -326,10 +309,8 @@ function guardarCambiosTutoria() {
     console.log(result);
     alert("Tutoría actualizada exitosamente.");
     
-    // Cierra el modal
     $('#editarModal').modal('hide');
     
-    // Recarga la tabla para mostrar los cambios
     cargarTutorias();
   })
   .catch(error => console.error('Error al guardar los cambios de la tutoría:', error));
@@ -339,7 +320,7 @@ function cargarHistorial(idTutoria) {
     .then(response => response.json())
     .then(historial => {
       const historialContainer = document.getElementById('historialModificaciones');
-      historialContainer.innerHTML = ''; // Limpia el historial previo
+      historialContainer.innerHTML = '';
 
       if (historial.length === 0) {
         historialContainer.innerHTML = '<p>No hay modificaciones registradas para esta tutoría.</p>';
@@ -360,18 +341,17 @@ function cargarHistorial(idTutoria) {
       console.error("Error al cargar el historial de modificaciones:", error);
     });
 }
-// Función para cargar los tutores en el select de "Tutor Asignado"
+
 function cargarTutores() {
   fetch('obtener_tutores.php')
     .then(response => response.json())
     .then(tutores => {
       const selectTutor = document.getElementById('tutorAsignado');
-      selectTutor.innerHTML = ''; // Limpiar opciones previas
+      selectTutor.innerHTML = ''; 
 
-      // Agregar una opción para cada tutor obtenido
       tutores.forEach(tutor => {
         const option = document.createElement('option');
-        option.value = tutor.num_control; // Usar el número de control como valor
+        option.value = tutor.num_control; 
         option.textContent = `${tutor.nombre} ${tutor.primer_apellido} ${tutor.segundo_apellido || ''}`;
         selectTutor.appendChild(option);
       });
@@ -381,11 +361,10 @@ function cargarTutores() {
     });
 }
 
-// Llama a cargarTutores al cargar la página
 document.addEventListener("DOMContentLoaded", cargarTutores);
 
 </script>
-<!-- Modal para Editar Tutoría -->
+
 <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -423,6 +402,5 @@ document.addEventListener("DOMContentLoaded", cargarTutores);
     </div>
   </div>
 </div>
-
 </body>
 </html>
