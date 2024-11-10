@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración del Sistema - ITS Jerez</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .main-content {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Barra de navegación (Navbar) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Administración del Sistema</a>
+  
+    <!-- Botón para pantallas pequeñas -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <!-- Enlaces de la barra de navegación -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="logout.php">Salir</a>
+        </li>
+    </div>
+  </nav>
+<!-- Contenido Principal -->
+<div class="main-content">
+  <div class="container">
+  <p>Gestiona usuarios, ??? y monitoriza el uso de la plataforma.</p>
+
+  <!-- Pestañas de navegación -->
+  <ul class="nav nav-tabs" id="adminTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="usuarios-tab" data-toggle="tab" href="#usuarios" role="tab">Gestión de Usuarios</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="permisos-tab" data-toggle="tab" href="#permisos" role="tab">?????</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="monitoreo-tab" data-toggle="tab" href="#monitoreo" role="tab">Monitorización del Sistema</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <!-- Gestión de Usuarios -->
+    <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
+      <div class="card my-4">
+        <div class="card-body">
+          <h5 class="card-title">Lista de Usuarios</h5>
+          <div class="form-inline mb-3">
+            <input type="text" class="form-control mr-2" id="buscarUsuario" placeholder="Buscar usuario..." oninput="buscarUsuario()">
+          </div>
+          <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalUsuario">Agregar Nuevo Usuario</button>
+
+          <!-- Tabla de usuarios -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>num_control</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="listaUsuarios">
+              <!-- Aquí se cargarán dinámicamente los usuarios -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control de Permisos -->
+    <div class="tab-pane fade" id="permisos" role="tabpanel">
+      <div class="card my-4">
+        <div class="card-body">
+          <h5 class="card-title">????</h5>
+
+          <!-- Permisos por Rol -->
+          <form id="formPermisos">
+            <div class="form-group">
+              <label for="rolSeleccionado">Seleccionar Rol</label>
+              <select class="form-control" id="rolSeleccionado">
+                <option value="Administrador">Administrador</option>
+                <option value="Tutor">Tutor</option>
+                <option value="Estudiante">Estudiante</option>
+              </select>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="permiso1">
+              <label class="form-check-label" for="permiso1">Acceso a gestión de tutorías</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="permiso2">
+              <label class="form-check-label" for="permiso2">Acceso a reportes</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="permiso3">
+              <label class="form-check-label" for="permiso3">Acceso a evaluaciones</label>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Guardar Permisos</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monitorización del Sistema -->
+    <div class="tab-pane fade" id="monitoreo" role="tabpanel">
+      <div class="card my-4">
+        <div class="card-body">
+          <h5 class="card-title">Estado del Sistema</h5>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="alert alert-info">
+                <strong>Usuarios Totales:</strong> <span id="usuariosTotales">0</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-info">
+                <strong>Tutorías Programadas:</strong> <span id="tutoriasTotales">0</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-info">
+                <strong>Usuarios Activos Hoy:</strong> <span id="usuariosActivos">0</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <div class="alert alert-primary">
+                <strong>Tutores:</strong> <span id="tutores">0</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-primary">
+                <strong>Estudiantes:</strong> <span id="estudiantes">0</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-primary">
+                <strong>Administradores:</strong> <span id="administradores">0</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gráfico de uso de la plataforma -->
+          <canvas id="graficoMonitoreo" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+
+<!-- Modal para agregar usuarios -->
+<div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUsuarioLabel">Agregar usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formUsuario">
+          <div class="form-group">
+            <label for="numControl">Número de Control</label>
+            <input type="number" class="form-control" id="numControl" name="num_control" required>
+          </div>
+          <div class="form-group">
+            <label for="nombreUsuario">Nombre</label>
+            <input type="text" class="form-control" id="nombreUsuario"  name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="primerApellidoUsuario">Primer Apellido</label>
+            <input type="text" class="form-control" id="primerApellidoUsuario" name="primer_apellido" required>
+          </div>
+          <div class="form-group">
+            <label for="segundoApellidoUsuario">Segundo Apellido</label>
+            <input type="text" class="form-control" id="segundoApellidoUsuario" name="segundo_apellido">
+          </div>
+          <div class="form-group">
+            <label for="emailUsuario">Email</label>
+            <input type="email" class="form-control" id="emailUsuario"  name="correo_electronico" required>
+          </div>
+          <div class="form-group">
+            <label for="contraseñaUsuario">Contraseña</label>
+            <input type="password" class="form-control" id="contraseñaUsuario" name="contraseña" required>
+          </div>
+          <div class="form-group">
+            <label for="confirmarContraseñaUsuario">Confirmar Contraseña</label>
+            <input type="password" class="form-control" id="confirmarContraseñaUsuario" name="confirmar_contraseña" required>
+          </div>
+          <div class="form-group">
+            <label for="rolUsuario">Rol</label>
+            <select class="form-control" id="rolUsuario" name="tipo_usuario" required onchange="toggleSemestre()">
+              <option value="Administrador">Administrador</option>
+              <option value="Tutor">Tutor</option>
+              <option value="Estudiante">Estudiante</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="semestreUsuario">Semestre</label>
+            <input type="number" class="form-control" id="semestreUsuario" name="semestre" min="1" max="12">
+          </div>
+          <div class="form-group">
+            <label for="fechaNacUsuario">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacUsuario" name="fecha_nac" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar usuarios -->
+<div class="modal fade"id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditarUsuario">
+          <!-- Número de Control (readonly) -->
+          <div class="form-group">
+            <label for="editarNumControl">Número de Control</label>
+            <input type="number" class="form-control" id="editarNumControl" name="num_control" readonly>
+          </div>
+          <!-- Nombre -->
+          <div class="form-group">
+            <label for="editarNombreUsuario">Nombre</label>
+            <input type="text" class="form-control" id="editarNombreUsuario" name="nombre" required>
+          </div>
+          <!-- Primer Apellido -->
+          <div class="form-group">
+            <label for="editarPrimerApellidoUsuario">Primer Apellido</label>
+            <input type="text" class="form-control" id="editarPrimerApellidoUsuario" name="primer_apellido" required>
+          </div>
+          <!-- Segundo Apellido -->
+          <div class="form-group">
+            <label for="editarSegundoApellidoUsuario">Segundo Apellido</label>
+            <input type="text" class="form-control" id="editarSegundoApellidoUsuario" name="segundo_apellido">
+          </div>
+          <!-- Correo Electrónico -->
+          <div class="form-group">
+            <label for="editarEmailUsuario">Correo Electrónico</label>
+            <input type="email" class="form-control" id="editarEmailUsuario" name="correo_electronico" required>
+          </div>
+          <!-- Tipo de Usuario -->
+          <div class="form-group">
+            <label for="editarRolUsuario">Rol</label>
+            <select class="form-control" id="editarRolUsuario" name="tipo_usuario" required onchange="toggleSemestreEditar()">
+              <option value="Administrador">Administrador</option>
+              <option value="Tutor">Tutor</option>
+              <option value="Estudiante">Estudiante</option>
+            </select>
+          </div>
+          <!-- Semestre  -->
+          <div class="form-group">
+            <label for="editarSemestreUsuario">Semestre</label>
+            <input type="number" class="form-control" id="editarSemestreUsuario" name="semestre" min="1" max="12">
+          </div>
+          <!-- Fecha de Nacimiento -->
+          <div class="form-group">
+            <label for="editarFechaNacUsuario">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="editarFechaNacUsuario" name="fecha_nac" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+  function cargarUsuarios() {
+  fetch('listar_usuarios.php')
+    .then(response => response.json())
+    .then(usuarios => {
+      const listaUsuarios = document.getElementById('listaUsuarios');
+      listaUsuarios.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+      usuarios.forEach(usuario => {
+        const fila = `
+          <tr>
+            <td>${usuario.num_control}</td>
+            <td>${usuario.nombre} ${usuario.primer_apellido} ${usuario.segundo_apellido || ''}</td>
+            <td>${usuario.correo_electronico}</td>
+            <td>${usuario.tipo_usuario}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" onclick="abrirEditorUsuario(${usuario.num_control})">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${usuario.num_control})">Eliminar</button>
+            </td>
+          </tr>
+        `;
+        listaUsuarios.insertAdjacentHTML('beforeend', fila);
+      });
+    })
+    .catch(error => console.error('Error al cargar usuarios:', error));
+}
+
+// Llama a cargarUsuarios cuando la página se carga
+document.addEventListener("DOMContentLoaded", cargarUsuarios);
+
+document.getElementById('formUsuario').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('agregar_usuario.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);  // Esto muestra el mensaje completo en la consola
+        alert(result);  // Muestra el mensaje específico que PHP devuelve
+
+        // Solo cerrar el modal y recargar usuarios si la inserción fue exitosa
+        if (result.includes("Registro exitoso")) {
+            $('#modalUsuario').modal('hide');
+            cargarUsuarios();  // Función que recarga la lista de usuarios
+        }
+    })
+    .catch(error => console.error('Error al guardar usuario:', error));
+});
+
+
+function eliminarUsuario(num_control) {
+  if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+    fetch('eliminar_usuario.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `num_control=${num_control}`
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log(result);
+      alert("Usuario eliminado con éxito.");
+      cargarUsuarios();
+    })
+    .catch(error => console.error('Error al eliminar usuario:', error));
+  }
+}
+
+function toggleSemestre() {
+  const rol = document.getElementById('rolUsuario').value;
+  const semestreField = document.getElementById('semestreUsuario');
+  
+  if (rol === 'Tutor' || rol === 'Administrador') {
+    semestreField.value = '';  // Vacía el campo de semestre
+    semestreField.disabled = true;  // Deshabilita el campo
+  } else {
+    semestreField.disabled = false;  // Habilita el campo para Estudiante
+  }
+}
+
+function toggleSemestreEditar() {
+  const rol = document.getElementById('editarRolUsuario').value;
+  const semestreField = document.getElementById('editarSemestreUsuario');
+  
+  if (rol === 'Tutor' || rol === 'Administrador') {
+    semestreField.value = '';  
+    semestreField.disabled = true; 
+  } else if (rol === 'Estudiante') {
+    semestreField.disabled = false;  
+  }
+}
+
+// Llama a toggleSemestre al cargar el modal para establecer el estado inicial
+document.addEventListener("DOMContentLoaded", () => {
+  toggleSemestre();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  toggleSemestreEditar();
+});
+function abrirEditorUsuario(num_control) {
+  // Solicitar los datos del usuario al backend
+  fetch(`obtener_usuario.php?num_control=${num_control}`)
+    .then(response => response.json())
+    .then(usuario => {
+      // Rellenar el formulario de edición con los datos obtenidos
+      document.getElementById('editarNumControl').value = usuario.num_control;
+      document.getElementById('editarNombreUsuario').value = usuario.nombre;
+      document.getElementById('editarPrimerApellidoUsuario').value = usuario.primer_apellido;
+      document.getElementById('editarSegundoApellidoUsuario').value = usuario.segundo_apellido;
+      document.getElementById('editarEmailUsuario').value = usuario.correo_electronico;
+      document.getElementById('editarRolUsuario').value = usuario.tipo_usuario;
+      document.getElementById('editarSemestreUsuario').value = usuario.semestre;
+      document.getElementById('editarFechaNacUsuario').value = usuario.fecha_nac;
+
+      // Mostrar el modal
+      $('#modalEditarUsuario').modal('show');
+    })
+    .catch(error => console.error('Error al cargar datos del usuario:', error));
+}
+
+
+document.getElementById('formEditarUsuario').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const formData = new FormData(this);
+
+  fetch('editar_usuario.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+    alert(result); // Muestra el mensaje del backend
+
+    // Cierra el modal y recarga la lista de usuarios
+    $('#modalEditarUsuario').modal('hide');
+    cargarUsuarios();
+  })
+  .catch(error => console.error('Error al actualizar usuario:', error));
+});
+
+function buscarUsuario() {
+  const textoBusqueda = document.getElementById('buscarUsuario').value.toLowerCase();
+  const filas = document.querySelectorAll('#listaUsuarios tr');
+
+  filas.forEach(fila => {
+    const nombre = fila.cells[0].textContent.toLowerCase();
+    const correo = fila.cells[1].textContent.toLowerCase();
+    const rol = fila.cells[2].textContent.toLowerCase();
+
+    // Verificar si el texto de búsqueda está en alguna de las columnas
+    if (nombre.includes(textoBusqueda) || correo.includes(textoBusqueda) || rol.includes(textoBusqueda)) {
+      fila.style.display = '';  // Mostrar la fila
+    } else {
+      fila.style.display = 'none';  // Ocultar la fila
+    }
+  });
+}
+function cargarMonitorizacion() {
+  fetch('monitorizacion_sistema.php')
+    .then(response => response.json())
+    .then(data => {
+      // Calcular los porcentajes de cada tipo de usuario
+      const porcentajeTutores = ((data.tutores / data.usuariosTotales) * 100).toFixed(2);
+      const porcentajeEstudiantes = ((data.estudiantes / data.usuariosTotales) * 100).toFixed(2);
+      const porcentajeAdministradores = ((data.administradores / data.usuariosTotales) * 100).toFixed(2);
+
+      // Actualizar la interfaz con los datos obtenidos
+      document.getElementById('usuariosTotales').textContent = data.usuariosTotales;
+      document.getElementById('tutores').textContent = `${data.tutores} (${porcentajeTutores}%)`;
+      document.getElementById('estudiantes').textContent = `${data.estudiantes} (${porcentajeEstudiantes}%)`;
+      document.getElementById('administradores').textContent = `${data.administradores} (${porcentajeAdministradores}%)`;
+      document.getElementById('tutoriasTotales').textContent = data.tutoriasTotales;
+      document.getElementById('usuariosActivos').textContent = data.usuariosActivosSemana;
+
+      // Llamar a la función para actualizar el gráfico
+      actualizarGraficoUsuarios(data);
+    })
+    .catch(error => console.error('Error al cargar datos de monitorización:', error));
+}
+
+// Llama a cargarMonitorizacion al cargar la página
+document.addEventListener("DOMContentLoaded", cargarMonitorizacion);
+
+let graficoUsuarios; // Variable global para almacenar el gráfico de usuarios
+
+function actualizarGraficoUsuarios(data) {
+  const ctx = document.getElementById('graficoMonitoreo').getContext('2d');
+
+  if (graficoUsuarios) {
+    // Si el gráfico ya existe, actualiza los datos
+    graficoUsuarios.data.datasets[0].data = [data.tutores, data.estudiantes, data.administradores];
+    graficoUsuarios.update();
+  } else {
+    // Crear el gráfico por primera vez
+    graficoUsuarios = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Tutores', 'Estudiantes', 'Administradores'],
+        datasets: [{
+          data: [data.tutores, data.estudiantes, data.administradores],
+          backgroundColor: ['#007bff', '#28a745', '#ffc107']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top'
+          }
+        }
+      }
+    });
+  }
+}
+
+</script>
+</body>
+</html>

@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['num_control'] = $num_control;
                 $_SESSION['nombre'] = $nombre;
                 $_SESSION['tipo_usuario'] = $tipo_usuario;
+                $num_control = $_POST['num_control']; // o el identificador del usuario
 
                 // Redirige al usuario según su rol
                 if ($tipo_usuario == 'Tutor') {
@@ -33,8 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } elseif ($tipo_usuario == 'Estudiante') {
                     header("Location: ./Pages/gestionTutorias.html");
                 } elseif ($tipo_usuario == 'Administrador') {
-                    header("Location: admin_dashboard.php");
+                    header("Location: ./Pages/AdministracionSistema.html");
                 }
+                
                 exit();
             } else {
                 // Contraseña incorrecta
@@ -46,6 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $stmt->close();
+         // Actualiza el campo `ultima_sesion` a la fecha y hora actuales
+         $sqlActualizarSesion = "UPDATE Usuario SET ultima_sesion = NOW() WHERE num_control = ?";
+         $stmt = $conexion->prepare($sqlActualizarSesion);
+         $stmt->bind_param("i", $num_control);
+         $stmt->execute();
+         $stmt->close();
     } else {
         echo "Error en la preparación de la consulta: " . $conexion->error;
     }
