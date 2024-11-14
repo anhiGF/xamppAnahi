@@ -26,11 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['num_control'] = $num_control;
                 $_SESSION['nombre'] = $nombre;
                 $_SESSION['tipo_usuario'] = $tipo_usuario;
-                $num_control = $_POST['num_control']; // o el identificador del usuario
+                $num_control = $_POST['num_control']; 
 
                 // Redirige al usuario según su rol
                 if ($tipo_usuario == 'Tutor') {
-                    header("Location: tutor_dashboard.php");
+                    header("Location: ./Pages/panelPrincipalDelTutor.html");
                 } elseif ($tipo_usuario == 'Estudiante') {
                     header("Location: ./Pages/gestionTutorias.html");
                 } elseif ($tipo_usuario == 'Administrador') {
