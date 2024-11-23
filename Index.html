@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head> 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plataforma de Tutorías - ITS Jerez</title>
@@ -70,7 +70,7 @@
 
   <!-- Navbar (barra de navegación) -->
   <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#"><img src="logo-itsjerez.png" alt="ITS Jerez" style="height: 40px;"> Tutorias</a>
+    <a class="navbar-brand" href="#"><img src="./Images/logo-itsjerez.png" alt="ITS Jerez" style="height: 40px;"> Tutorias</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -88,8 +88,8 @@
     <div class="container">
       <h1 class="jumbotron-heading">Gestión de Tutorías para el ITS Jerez</h1>
       <p class="lead">Conecta a estudiantes y tutores para mejorar el rendimiento académico con herramientas avanzadas de seguimiento y evaluación. correo:admin@tecjerez.edu.mx contraseña:admin</p>
-      <a href="#" class="btn btn-primary my-2" id="openRegistroEstudianteModal">Registrarse como Estudiante</a>
-      <a href="#" class="btn btn-secondary my-2" id="openRegistroTutorModal">Registrarse como Tutor</a>
+    <!--  <a href="#" class="btn btn-primary my-2" id="openRegistroEstudianteModal">Registrarse como Estudiante</a>
+      <a href="#" class="btn btn-secondary my-2" id="openRegistroTutorModal">Registrarse como Tutor</a>-->
    </div>
   </section>
 
@@ -188,7 +188,7 @@
 <script>
     // Cargar y mostrar el modal de inicio de sesión
 $('#openLoginModal').on('click', function() {
-  $('#modalContent').load('login.html', function() {
+  $('#modalContent').load('./Pages/login.html', function() {
     $('#myModal').modal('show');
 
     // Cuando el usuario haga clic en "¿Olvidaste tu contraseña?"
@@ -200,7 +200,7 @@ $('#openLoginModal').on('click', function() {
 
       // Espera que el modal de inicio de sesión se cierre
       $('#myModal').on('hidden.bs.modal', function () {
-        $('#modalContent').load('recuperacionContraseña.html', function() {
+        $('#modalContent').load('./Pages/recuperacionContraseña.html', function() {
           $('#myModal').modal('show');  
           $('#myModal').off('hidden.bs.modal'); 
         });
@@ -211,14 +211,14 @@ $('#openLoginModal').on('click', function() {
 
     // Cuando el usuario haga clic en el botón de registro como estudiante
     $('#openRegistroEstudianteModal').on('click', function() {
-      $('#modalContent').load('./registroEstudiante.html', function() {
+      $('#modalContent').load('./Pages/registroEstudiante.html', function() {
         $('#myModal').modal('show');
       });
     });
 
     // Cuando el usuario haga clic en el botón de registro como tutor
     $('#openRegistroTutorModal').on('click', function() {
-      $('#modalContent').load('./registroTutores.html', function() {
+      $('#modalContent').load('./Pages/registroTutores.html', function() {
         $('#myModal').modal('show');
       });
     });

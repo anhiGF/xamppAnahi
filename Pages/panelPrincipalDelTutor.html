@@ -7,66 +7,15 @@
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .navbar-brand {
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-    .main-content {
-      margin-top: 80px; 
-      padding: 20px;
-    }
-   
-    .card-custom {
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .card-custom:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
-    }
+    body {font-family: Arial, sans-serif; }
+    .navbar-brand {font-size: 1.5em; font-weight: bold; }
+    .main-content {margin-top: 80px;  padding: 20px;}
+   .card-custom { transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+    .card-custom:hover {  transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2); }
   </style>
 </head>
 <body>
-<!-- Barra de navegación (Navbar) -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#" id="nombreTutor">Tutor</a> <!-- Aquí se reemplaza dinámicamente -->
-
-    <!-- Botón para pantallas pequeñas -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Enlaces de la barra de navegación -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sesiones de Tutoría</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Gestión de Horarios</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Estudiantes Asignados</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Gestión de Perfil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Apps Webs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Material</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Notificaciones</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
+  <div id="navbarContainer"></div>
   <!-- Contenido Principal -->
   <div class="main-content">
     <div class="container">
@@ -74,13 +23,24 @@
 
       <!-- Tarjetas de acceso rápido a las funcionalidades -->
       <div class="row">
+         <!-- Gestión de Perfil -->
+         <div class="col-md-4">
+          <div class="card card-custom mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Gestión de Perfil</h5>
+              <p class="card-text">Actualiza tu información personal y profesional.</p>
+              <a href="./ConfiguracionUsusario.html" class="btn btn-primary">Editar Perfil</a>
+            </div>
+          </div>
+        </div>
+        
         <!-- Sesiones de Tutoría -->
         <div class="col-md-4">
           <div class="card card-custom mb-4">
             <div class="card-body">
               <h5 class="card-title">Sesiones de Tutoría</h5>
               <p class="card-text">Accede a tus próximas sesiones y gestiona las sesiones pasadas.</p>
-              <a href="#" class="btn btn-primary">Ver Sesiones</a>
+              <a href="./PanelPrincipalABCC.HTML" class="btn btn-primary">Ver Sesiones</a>
             </div>
           </div>
         </div>
@@ -91,31 +51,21 @@
             <div class="card-body">
               <h5 class="card-title">Gestión de Horarios</h5>
               <p class="card-text">Configura tus horarios de tutoría disponibles.</p>
-              <a href="#" class="btn btn-primary">Gestionar Horarios</a>
+              <a href="./GestionHorariosTutores.html" class="btn btn-primary">Gestionar Horarios</a>
             </div>
           </div>
         </div>
 
+      </div>
+
+      <div class="row">
         <!-- Estudiantes Asignados -->
         <div class="col-md-4">
           <div class="card card-custom mb-4">
             <div class="card-body">
-              <h5 class="card-title">Estudiantes Asignados</h5>
-              <p class="card-text">Revisa y contacta a los estudiantes asignados a tus tutorías.</p>
-              <a href="#" class="btn btn-primary">Ver Estudiantes</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <!-- Gestión de Perfil -->
-        <div class="col-md-4">
-          <div class="card card-custom mb-4">
-            <div class="card-body">
-              <h5 class="card-title">Gestión de Perfil</h5>
-              <p class="card-text">Actualiza tu información personal y profesional.</p>
-              <a href="#" class="btn btn-primary">Editar Perfil</a>
+              <h5 class="card-title">Estadisticas personales</h5>
+              <p class="card-text">Revisa tus Estadisticas.</p>
+              <a href="./EstadisticasPersonales.html" class="btn btn-primary">Ver Estadisticas</a>
             </div>
           </div>
         </div>
@@ -126,7 +76,7 @@
             <div class="card-body">
               <h5 class="card-title">Apps webs</h5>
               <p class="card-text">Accede y comparte materiales con tus estudiantes a través de apps.</p>
-              <a href="#" class="btn btn-primary">abrir apps </a>
+              <a href="./HerramientasApoyo2.html" class="btn btn-primary">abrir apps </a>
             </div>
           </div>
         </div>
@@ -136,7 +86,7 @@
             <div class="card-body">
               <h5 class="card-title">Material de apoyo</h5>
               <p class="card-text">Maneja el contenido para tus tutorias y estudiantes.</p>
-              <a href="#" class="btn btn-primary">Materiales</a>
+              <a href="./GestionContenidoTutorias.html" class="btn btn-primary">Materiales</a>
             </div>
           </div>
         </div>
@@ -161,6 +111,12 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
+  <script>
+    fetch('navbartutor.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbarContainer').innerHTML = data;
+      });
+  </script>
 </body>
 </html>

@@ -30,7 +30,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="logout.php">Salir</a>
+          <a class="nav-link" href="../Scripts/backend/logout.php">Salir</a>
         </li>
     </div>
   </nav>
@@ -302,7 +302,7 @@
 <script>
 
   function cargarUsuarios() {
-  fetch('listar_usuarios.php')
+  fetch('../Scripts/backend/listar_usuarios.php')
     .then(response => response.json())
     .then(usuarios => {
       const listaUsuarios = document.getElementById('listaUsuarios');
@@ -335,7 +335,7 @@ document.getElementById('formUsuario').addEventListener('submit', function(event
 
     const formData = new FormData(this);
 
-    fetch('agregar_usuario.php', {
+    fetch('../Scripts/backend/agregar_usuario.php', {
         method: 'POST',
         body: formData
     })
@@ -356,7 +356,7 @@ document.getElementById('formUsuario').addEventListener('submit', function(event
 
 function eliminarUsuario(num_control) {
   if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-    fetch('eliminar_usuario.php', {
+    fetch('../Scripts/backend/eliminar_usuario.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `num_control=${num_control}`
@@ -386,7 +386,7 @@ function toggleSemestre() {
 function toggleSemestreEditar() {
   const rol = document.getElementById('editarRolUsuario').value;
   const semestreField = document.getElementById('editarSemestreUsuario');
-  
+  semestreField.disabled = false; 
   if (rol === 'Tutor' || rol === 'Administrador') {
     semestreField.value = '';  
     semestreField.disabled = true; 
@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 function abrirEditorUsuario(num_control) {
   // Solicitar los datos del usuario al backend
-  fetch(`obtener_usuario.php?num_control=${num_control}`)
+  fetch(`../Scripts/backend/obtener_usuario.php?num_control=${num_control}`)
     .then(response => response.json())
     .then(usuario => {
       // Rellenar el formulario de edición con los datos obtenidos
@@ -430,7 +430,7 @@ document.getElementById('formEditarUsuario').addEventListener('submit', function
 
   const formData = new FormData(this);
 
-  fetch('editar_usuario.php', {
+  fetch('../Scripts/backend/editar_usuario.php', {
     method: 'POST',
     body: formData
   })
@@ -463,7 +463,7 @@ function buscarUsuario() {
   });
 }
 function cargarMonitorizacion() {
-  fetch('monitorizacion_sistema.php')
+  fetch('../Scripts/backend/monitorizacion_sistema.php')
     .then(response => response.json())
     .then(data => {
       // Calcular los porcentajes de cada tipo de usuario

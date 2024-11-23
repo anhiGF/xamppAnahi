@@ -1,10 +1,10 @@
-<h5 class="modal-title" id="myModalLabel">Registro Estudiantes</h5>
+<h5 class="modal-title" id="myModalLabel">Registro Tutores</h5>
 <div class="modal-body">
-    <form id="registroForm" action="registro_estudiante.php" method="POST">
+    <form id="registroForm" action="../Scripts/backend/registro_estudiante.php" method="POST">
         <!-- Número de Control -->
         <div class="form-group">
-            <label for="numControl">Número de Control</label>
-            <input type="text" class="form-control" id="numControl" name="num_control" placeholder="Número de Control" required>
+            <label for="numControl">Número de Matricula</label>
+            <input type="text" class="form-control" id="numControl" name="num_control" placeholder="Número de Matricula" required>
         </div>
 
         <!-- Nombre -->
@@ -14,7 +14,7 @@
         </div>
 
         <!-- Primer Apellido -->
-        <div class="form-group">
+        <div class="form-group"> 
             <label for="primerApellido">Primer Apellido</label>
             <input type="text" class="form-control" id="primerApellido" name="primer_apellido" placeholder="Primer Apellido" required>
         </div>
@@ -43,12 +43,6 @@
             <input type="password" class="form-control" id="confirmPasswordEstudiante" name="confirmar_contraseña" placeholder="Confirmar contraseña" required>
         </div>
 
-        <!-- Semestre -->
-        <div class="form-group">
-            <label for="semestre">Semestre</label>
-            <input type="number" class="form-control" id="semestre" name="semestre" placeholder="Semestre" min="1" max="12">
-        </div>
-
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
             <label for="fechaNac">Fecha de Nacimiento</label>
@@ -56,7 +50,7 @@
         </div>
 
         <!-- Tipo de Usuario (oculto, ya que es solo para estudiantes) -->
-        <input type="hidden" id="tipoUsuario" name="tipo_usuario" value="Estudiante">
+        <input type="hidden" id="tipoUsuario" name="tipo_usuario" value="Tutor">
 
         <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
     </form>

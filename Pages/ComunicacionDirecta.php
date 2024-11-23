@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexion.php");
+include("../Scripts/backend/conexion.php");
 
 if (!isset($_SESSION['num_control'])) {
     echo json_encode(["error" => "Usuario no autenticado"]);
@@ -22,20 +22,24 @@ $id_remitente = $_SESSION['num_control'];
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { font-family: Arial, sans-serif; background-color: #f8f9fa; }
-    .chat-container { display: flex; height: 80vh; margin-top: 20px; }
+    .chat-container { display: flex; height: 75vh; margin-top: 10px; }
     .contact-list { width: 25%; border-right: 1px solid #ddd; overflow-y: auto; }
     .contact-item { padding: 10px; cursor: pointer; transition: background-color 0.2s; }
     .contact-item:hover, .contact-item.active { background-color: #e9ecef; }
-    .chat-window { width: 75%; display: flex; flex-direction: column; padding: 10px; }
-    .messages { flex-grow: 1; overflow-y: auto; padding: 10px; border-bottom: 1px solid #ddd; }
+    .chat-window { width: 80%; display: flex; flex-direction: column; padding: 10px; }
+    .messages { flex-grow: 1; overflow-y: auto; padding: 5px; border-bottom: 1px solid #ddd; }
     .message-input { display: flex; align-items: center; padding: 10px; }
     .message-input input { flex-grow: 1; margin-right: 10px; }
-    .message { padding: 8px; margin-bottom: 5px; border-radius: 10px; max-width: 70%; }
+    .message { padding: 8px; margin-bottom: 5px; border-radius: 10px; max-width: 95%; }
     .message.sent { background-color: #d1e7dd; align-self: flex-end; }
     .message.received { background-color: #e2e3e5; align-self: flex-start; }
+    .main-content {margin-top: 30px;  padding: 15px; }
   </style>
 </head>
 <body>
+<div id="navbarContainer"></div>
+<div class="main-content">
+<div id="navbarContainer"></div>
   <div class="container">
     <h1 class="mt-4">Mensajes</h1>
     <div class="chat-container">
@@ -49,7 +53,7 @@ $id_remitente = $_SESSION['num_control'];
       </div>
     </div>
   </div>
-
+</div>
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
@@ -62,7 +66,7 @@ $id_remitente = $_SESSION['num_control'];
     });
 
     function cargarContactos() {
-      fetch('obtener_contactos.php')
+      fetch('../Scripts/backend/obtener_contactos.php')
         .then(response => response.json())
         .then(contactos => {
           const contactList = document.getElementById('contactList');
@@ -97,7 +101,7 @@ $id_remitente = $_SESSION['num_control'];
 
       console.log("ID Remitente:", idRemitente); // Usar la variable idRemitente correctamente
 
-      fetch(`cargar_mensajes.php?id_destinatario=${idDestinatario}`)
+      fetch(`../Scripts/backend/cargar_mensajes.php?id_destinatario=${idDestinatario}`)
         .then(response => response.json())
         .then(mensajes => {
           console.log("Mensajes recibidos:", mensajes); // Verificar mensajes recibidos
@@ -130,7 +134,7 @@ $id_remitente = $_SESSION['num_control'];
       formData.append('contenido', contenido);
       formData.append('id_destinatario', idDestinatario);
 
-      fetch('enviar_mensaje.php', {
+      fetch('../Scripts/backend/enviar_mensaje.php', {
         method: 'POST',
         body: formData
       })
@@ -146,6 +150,11 @@ $id_remitente = $_SESSION['num_control'];
       })
       .catch(error => console.error('Error al enviar mensaje:', error));
     }
+    fetch('navbartutor.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbarContainer').innerHTML = data;
+      });
   </script>
 </body>
 </html>

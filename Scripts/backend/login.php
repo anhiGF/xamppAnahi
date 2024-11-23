@@ -30,11 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Redirige al usuario según su rol
                 if ($tipo_usuario == 'Tutor') {
-                    header("Location: ./Pages/panelPrincipalDelTutor.html");
+                    header("Location: ../../Pages/panelPrincipalDelTutor.html");
                 } elseif ($tipo_usuario == 'Estudiante') {
-                    header("Location: ./Pages/gestionTutorias.html");
+                    header("Location: ../../Pages/gestionTutorias.html");
                 } elseif ($tipo_usuario == 'Administrador') {
-                    header("Location: ./Pages/AdministracionSistema.html");
+                    header("Location: ../../Pages/AdministracionSistema.html");
                 }
                 
                 exit();
