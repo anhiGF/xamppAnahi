@@ -4,6 +4,7 @@ include("../Scripts/backend/conexion.php");
 
 if (!isset($_SESSION['num_control'])) {
     echo json_encode(["error" => "Usuario no autenticado"]);
+    header("Location: ../Index.html");
     exit();
 }
 

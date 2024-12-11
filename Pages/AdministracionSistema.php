@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Verifica si el usuario ha iniciado sesión
+if (!isset($_SESSION['num_control']) || $_SESSION['tipo_usuario'] !== 'Administrador') {
+    // Redirige al login si no ha iniciado sesión o no es administrador
+    header("Location: ../Index.html");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

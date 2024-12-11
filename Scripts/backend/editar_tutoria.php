@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_tutoria'])) {
     $descripcion = $_POST['descripcion'];
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
-    $usuario_id = $_SESSION['num_control'];  // Supongamos que el ID del usuario está en la sesión
+    $usuario_id = $_SESSION['num_control'];
 
     $sql = "UPDATE Tutoria SET titulo = ?, descripcion = ?, fecha = ?, hora = ? WHERE id_tutoria = ?";
     

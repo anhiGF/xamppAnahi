@@ -27,14 +27,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['nombre'] = $nombre;
                 $_SESSION['tipo_usuario'] = $tipo_usuario;
                 $num_control = $_POST['num_control']; 
+                // Actualiza la última sesión
+                $sqlActualizarSesion = "UPDATE Usuario SET ultima_sesion = NOW() WHERE num_control = ?";
+                $stmtActualizar = $conexion->prepare($sqlActualizarSesion);
+                $stmtActualizar->bind_param("i", $num_control);
+                $stmtActualizar->execute();
+                $stmtActualizar->close();
 
                 // Redirige al usuario según su rol
                 if ($tipo_usuario == 'Tutor') {
-                    header("Location: ../../Pages/panelPrincipalDelTutor.html");
+                    header("Location: ../../Pages/panelPrincipalDelTutor.php");
                 } elseif ($tipo_usuario == 'Estudiante') {
-                    header("Location: ../../Pages/gestionTutorias.html");
+                    header("Location: ../../Pages/gestionTutorias.php");
                 } elseif ($tipo_usuario == 'Administrador') {
-                    header("Location: ../../Pages/AdministracionSistema.html");
+                    header("Location: ../../Pages/AdministracionSistema.php");
                 }
                 
                 exit();
@@ -48,12 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $stmt->close();
-         // Actualiza el campo `ultima_sesion` a la fecha y hora actuales
-         $sqlActualizarSesion = "UPDATE Usuario SET ultima_sesion = NOW() WHERE num_control = ?";
-         $stmt = $conexion->prepare($sqlActualizarSesion);
-         $stmt->bind_param("i", $num_control);
-         $stmt->execute();
-         $stmt->close();
+         
     } else {
         echo "Error en la preparación de la consulta: " . $conexion->error;
     }
