@@ -1,8 +1,8 @@
 <?php
 // Configuración de los datos de acceso a la base de datos
 $host = "localhost";     
-$usuario = "root";  
-$contraseña = "ARNIAK123"; 
+$usuario = "AdminTec";  
+$contraseña = "AdminTec"; 
 $base_datos = "tutorias";  
 
 // Crear la conexión
