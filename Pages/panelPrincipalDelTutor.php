@@ -39,7 +39,7 @@ if (!isset($_SESSION['num_control']) ) {
             <div class="card-body">
               <h5 class="card-title">Gestión de Perfil</h5>
               <p class="card-text">Actualiza tu información personal y profesional.</p>
-              <a href="./ConfiguracionUsusario.html" class="btn btn-primary">Editar Perfil</a>
+              <a href="./ConfiguracionUsusario.php" class="btn btn-primary">Editar Perfil</a>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ if (!isset($_SESSION['num_control']) ) {
             <div class="card-body">
               <h5 class="card-title">Sesiones de Tutoría</h5>
               <p class="card-text">Accede a tus próximas sesiones y gestiona las sesiones pasadas.</p>
-              <a href="./gestionTutoriastutores.html" class="btn btn-primary">Ver Sesiones</a>
+              <a href="./gestionTutoriastutores.php" class="btn btn-primary">Ver Sesiones</a>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ if (!isset($_SESSION['num_control']) ) {
             <div class="card-body">
               <h5 class="card-title">Gestión de Horarios</h5>
               <p class="card-text">Configura tus horarios de tutoría disponibles.</p>
-              <a href="./GestionHorariosTutores.html" class="btn btn-primary">Gestionar Horarios</a>
+              <a href="./GestionHorariosTutores.php" class="btn btn-primary">Gestionar Horarios</a>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ if (!isset($_SESSION['num_control']) ) {
             <div class="card-body">
               <h5 class="card-title">Estadisticas personales</h5>
               <p class="card-text">Revisa tus Estadisticas.</p>
-              <a href="./EstadisticasPersonales.html" class="btn btn-primary">Ver Estadisticas</a>
+              <a href="./EstadisticasPersonales.php" class="btn btn-primary">Ver Estadisticas</a>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ if (!isset($_SESSION['num_control']) ) {
             <div class="card-body">
               <h5 class="card-title">Apps webs</h5>
               <p class="card-text">Accede y comparte materiales con tus estudiantes a través de apps.</p>
-              <a href="./HerramientasApoyo2.html" class="btn btn-primary">abrir apps </a>
+              <a href="./HerramientasApoyo2.php" class="btn btn-primary">abrir apps </a>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ if (!isset($_SESSION['num_control']) ) {
             <div class="card-body">
               <h5 class="card-title">Material de apoyo</h5>
               <p class="card-text">Maneja el contenido para tus tutorias y estudiantes.</p>
-              <a href="./GestionContenidoTutorias.html" class="btn btn-primary">Materiales</a>
+              <a href="./GestionContenidoTutorias.php" class="btn btn-primary">Materiales</a>
             </div>
           </div>
         </div>

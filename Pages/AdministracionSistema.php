@@ -94,84 +94,73 @@ if (!isset($_SESSION['num_control']) || $_SESSION['tipo_usuario'] !== 'Administr
     </div>
 
    <!-- Reportes -->
-  <div class="tab-pane fade" id="permisos" role="tabpanel">
-    <div class="card my-4">
-      <div class="card-body">
-        <div class="container">
-          <h1>Reportes y Estadísticas</h1>
-    <p>Visualiza las estadísticas de uso de la plataforma, el rendimiento de los tutores, y la satisfacción de los estudiantes.</p>
-    
-    <!-- Filtros para seleccionar el período de tiempo -->
-    <form id="formFiltros" method="POST">
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="mesSeleccionado">Seleccionar Mes</label>
-          <select class="form-control" id="mesSeleccionado" name="mesSeleccionado">
-            <option value="01">Enero</option>
-            <option value="02">Febrero</option>
-            <option value="03">Marzo</option>
-            <option value="01">Abril</option>
-            <option value="02">Mayo</option>
-            <option value="03">junio</option>
-            <option value="01">Julio</option>
-            <option value="02">Agosto</option>
-            <option value="03">Septiembre</option>
-            <option value="01">Octubre</option>
-            <option value="02">Noviemre</option>
-            <option value="03">Diciembre</option>
-          </select>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="anoSeleccionado">Seleccionar Año</label>
-          <select class="form-control" id="anoSeleccionado" name="anoSeleccionado">
-            <option value="2024">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-          </select>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-    </form>
-    
-    <!-- Gráfico de Tutorías por mes -->
-    <div class="card mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Tutorías Realizadas por Mes</h5>
-        <canvas id="graficoTutoriasMes" width="400" height="200"></canvas>
-      </div>
-    </div>
-    
-    <!-- Tabla de rendimiento de tutores -->
-    <div class="card mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Rendimiento de los Tutores</h5>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Tutor</th>
-              <th>Tutorías Realizadas</th>
-              <th>Calificación Promedio</th>
-            </tr>
-          </thead>
-          <tbody id="listaRendimientoTutores">
-            <!-- Aquí se cargarán dinámicamente los tutores -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-    <!-- Gráfico de Satisfacción de los Estudiantes -->
-    <div class="card mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Satisfacción Promedio de los Estudiantes</h5>
-        <svg id="graficoSatisfaccion" width="400" height="200"></svg>
-      </div>
-    </div>
+    <div class="tab-pane fade" id="permisos" role="tabpanel">
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="container">
+            <h1>Reportes y Estadísticas</h1>
+            <p>Visualiza las estadísticas de uso de la plataforma, el rendimiento de los tutores, y la satisfacción de los estudiantes.</p>
+
+            <!-- Estadísticas de Tutorías -->
+            <div class="card mt-4">
+              <div class="card-body">
+                <!-- Tabla de Total de Tutorías -->
+                  <h3>Total de Tutorías</h3>
+                  <table class="table table-striped table-hover mt-3">
+                    <thead>
+                      <tr>
+                        <th>Total Tutorías</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tablaTotalTutorias">
+                      <!-- El contenido se llenará dinámicamente -->
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+
+            <!-- Rendimiento de Tutores -->
+            <div class="card mt-4">
+              <div class="card-body">
+                <!-- Tabla de Rendimiento de Tutores -->
+                  <h3>Rendimiento de Tutores</h3>
+                  <table class="table table-striped table-hover mt-3">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Tutorías Realizadas</th>
+                        <th>Calificación Promedio</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tablaRendimientoTutores">
+                      <!-- El contenido se llenará dinámicamente -->
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+
+            <!-- Satisfacción Promedio de Estudiantes -->
+            <div class="card mt-4">
+              <div class="card-body">
+                <!-- Tabla de Satisfacción Promedio de Estudiantes -->
+                <h3>Satisfacción Promedio de Estudiantes</h3>
+                <table class="table table-striped table-hover mt-3">
+                  <thead>
+                    <tr>
+                      <th>Satisfacción Promedio</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaSatisfaccionEstudiantes">
+                    <!-- El contenido se llenará dinámicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
     <!-- Monitorización del Sistema -->
     <div class="tab-pane fade" id="monitoreo" role="tabpanel">
@@ -576,128 +565,77 @@ function actualizarGraficoUsuarios(data) {
     });
   }
 }
-
-</script>
-<script>
-  // 1. Interceptar el envío del formulario para evitar la recarga de la página
-  document.getElementById('formFiltros').addEventListener('submit', function(event) {
-    event.preventDefault();  // Evitar el envío tradicional del formulario
-
-    const mesSeleccionado = document.getElementById('mesSeleccionado').value;
-    const anoSeleccionado = document.getElementById('anoSeleccionado').value;
-
-    // Enviar la solicitud de datos con los filtros seleccionados
-    fetch('estadisticas.php', {
-      method: 'POST',
-      body: new URLSearchParams({
-        mesSeleccionado: mesSeleccionado,
-        anoSeleccionado: anoSeleccionado
-      })
-    })
-    .then(response => response.json())
+// Función para cargar el total de tutorías
+function cargarTotalTutorias() {
+  fetch('../Scripts/backend/total_tutorias.php')  
+    .then(response => response.json())  
     .then(data => {
-      // Crear gráfico con Chart.js
-      const ctx = document.getElementById('graficoTutoriasMes').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Tutorías'],
-          datasets: [{
-            label: 'Total Tutorías',
-            data: [data.length > 0 ? data[0].total_tutorias : 0],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }
-      });
-    });
+      const tabla = document.getElementById('tablaTotalTutorias');
+      tabla.innerHTML = ''; 
 
-    // Obtener el rendimiento de los tutores
-    fetch('rendimiento_tutores.php')
-      .then(response => response.json())
-      .then(data => {
-        const tablaRendimiento = document.getElementById('listaRendimientoTutores');
-        tablaRendimiento.innerHTML = '';  // Limpiar la tabla antes de agregar nuevos datos
-        data.forEach(tutor => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${tutor.nombre} ${tutor.primer_apellido}</td>
+      const fila = `
+        <tr>
+          <td>${data.total_tutorias}</td>
+        </tr>
+      `;
+      tabla.insertAdjacentHTML('beforeend', fila);
+    })
+    .catch(error => {
+      console.error("Error al cargar el total de tutorías:", error);
+      alert("Hubo un problema al cargar las tutorías. Revisa la consola para más detalles.");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", cargarTotalTutorias);
+
+function cargarSatisfaccionEstudiantes() {
+  fetch('../Scripts/backend/satisfaccion_estudiantes.php')  
+    .then(response => response.json())  
+    .then(data => {
+      const tabla = document.getElementById('tablaSatisfaccionEstudiantes');
+      tabla.innerHTML = '';  
+
+      const fila = `
+        <tr>
+          <td>${data.satisfaccion_promedio}</td>
+        </tr>
+      `;
+      tabla.insertAdjacentHTML('beforeend', fila);
+    })
+    .catch(error => {
+      console.error("Error al cargar la satisfacción de los estudiantes:", error);
+      alert("Hubo un problema al cargar la satisfacción de los estudiantes. Revisa la consola para más detalles.");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", cargarSatisfaccionEstudiantes);
+
+function cargarRendimientoTutores() {
+  fetch('../Scripts/backend/rendimiento_tutores.php')  
+    .then(response => response.json())  
+    .then(data => {
+      const tabla = document.getElementById('tablaRendimientoTutores');
+      tabla.innerHTML = ''; 
+
+      data.forEach(tutor => {
+        const fila = `
+          <tr>
+            <td>${tutor.nombre}</td>
             <td>${tutor.tutorias_realizadas}</td>
-            <td>${tutor.calificacion_promedio.toFixed(2)}</td>
-          `;
-          tablaRendimiento.appendChild(row);
-        });
+            <td>${tutor.calificacion_promedio}</td>
+          </tr>
+        `;
+        tabla.insertAdjacentHTML('beforeend', fila);
       });
-
-    // Obtener la satisfacción promedio de los estudiantes
-    fetch('satisfaccion_estudiantes.php')
-      .then(response => response.json())
-      .then(data => {
-        const satisfaction = data.satisfaccion_promedio || 0;
-        const svg = d3.select('#graficoSatisfaccion');
-        const width = svg.attr('width');
-        const height = svg.attr('height');
-
-        const radius = Math.min(width, height) / 2;
-        const arc = d3.arc().outerRadius(radius - 10).innerRadius(0);
-        const pie = d3.pie().sort(null).value(d => d);
-
-        const dataSatisfaccion = pie([satisfaction, 100 - satisfaction]);
-
-        svg.append('g')
-           .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
-           .selectAll('.arc')
-           .data(dataSatisfaccion)
-           .enter().append('path')
-           .attr('class', 'arc')
-           .attr('d', arc)
-           .style('fill', (d, i) => i === 0 ? 'green' : 'red');
-      });
-  });
-
-  // Cargar los gráficos al iniciar la página
-  document.addEventListener('DOMContentLoaded', function() {
-    const mesSeleccionado = document.getElementById('mesSeleccionado').value;
-    const anoSeleccionado = document.getElementById('anoSeleccionado').value;
-
-    // Llamada inicial para cargar los gráficos
-    fetch('estadisticas.php', {
-      method: 'POST',
-      body: new URLSearchParams({
-        mesSeleccionado: mesSeleccionado,
-        anoSeleccionado: anoSeleccionado
-      })
     })
-    .then(response => response.json())
-    .then(data => {
-      // Crear gráfico con Chart.js
-      const ctx = document.getElementById('graficoTutoriasMes').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Tutorías'],
-          datasets: [{
-            label: 'Total Tutorías',
-            data: [data.length > 0 ? data[0].total_tutorias : 0],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }
-      });
+    .catch(error => {
+      console.error("Error al cargar el rendimiento de los tutores:", error);
+      alert("Hubo un problema al cargar el rendimiento de los tutores. Revisa la consola para más detalles.");
     });
-  });
+}
+
+document.addEventListener("DOMContentLoaded", cargarRendimientoTutores);
+
 </script>
 </body>
 </html>

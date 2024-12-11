@@ -8,7 +8,8 @@ if (!isset($_SESSION['num_control'])) {
     exit();
 }
 
-$sql = "SELECT AVG(puntaje) AS satisfaccion_promedio FROM Evaluacion"; 
+// Prepara la consulta SQL para obtener el total de tutorías
+$sql = "SELECT COUNT(*) AS total_tutorias FROM Tutoria";
 $stmt = $conexion->prepare($sql);
 
 if (!$stmt) {
@@ -20,11 +21,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
-$satisfaccionPromedio = $row['satisfaccion_promedio'];
+$totalTutorias = $row['total_tutorias'];
 
 $stmt->close();
 $conexion->close();
 
+// Envía los datos en formato JSON
 header('Content-Type: application/json');
-echo json_encode(["satisfaccion_promedio" => number_format($satisfaccionPromedio, 2)]);  // Se formatea el promedio con 2 decimales
+echo json_encode(["total_tutorias" => $totalTutorias]);
 ?>
