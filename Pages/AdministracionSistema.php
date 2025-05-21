@@ -100,7 +100,7 @@ if (!isset($_SESSION['num_control']) || $_SESSION['tipo_usuario'] !== 'Administr
           <div class="container">
             <h1>Reportes y Estadísticas</h1>
             <p>Visualiza las estadísticas de uso de la plataforma, el rendimiento de los tutores, y la satisfacción de los estudiantes.</p>
-
+            <button id="btnExportarPDF" class="btn btn-primary mt-4">Exportar a PDF</button>
             <!-- Estadísticas de Tutorías -->
             <div class="card mt-4">
               <div class="card-body">
@@ -323,7 +323,7 @@ if (!isset($_SESSION['num_control']) || $_SESSION['tipo_usuario'] !== 'Administr
           <!-- Semestre  -->
           <div class="form-group">
             <label for="editarSemestreUsuario">Semestre</label>
-            <input type="number" class="form-control" id="editarSemestreUsuario" name="semestre" min="1" max="12">
+            <input type="number" class="form-control" id="editarSemestreUsuario" name="semestre" min="0" max="14">
           </div>
           <!-- Fecha de Nacimiento -->
           <div class="form-group">
@@ -345,6 +345,8 @@ if (!isset($_SESSION['num_control']) || $_SESSION['tipo_usuario'] !== 'Administr
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
 <script>
 
   function cargarUsuarios() {
@@ -352,7 +354,7 @@ if (!isset($_SESSION['num_control']) || $_SESSION['tipo_usuario'] !== 'Administr
     .then(response => response.json())
     .then(usuarios => {
       const listaUsuarios = document.getElementById('listaUsuarios');
-      listaUsuarios.innerHTML = ''; // Limpiar la tabla antes de llenarla
+      listaUsuarios.innerHTML = ''; 
 
       usuarios.forEach(usuario => {
         const fila = `
@@ -387,18 +389,21 @@ document.getElementById('formUsuario').addEventListener('submit', function(event
     })
     .then(response => response.text())
     .then(result => {
-        console.log(result);  // Esto muestra el mensaje completo en la consola
-        alert(result);  // Muestra el mensaje específico que PHP devuelve
-
-        // Solo cerrar el modal y recargar usuarios si la inserción fue exitosa
+        console.log(result);  
+        alert(result); 
         if (result.includes("Registro exitoso")) {
             $('#modalUsuario').modal('hide');
-            cargarUsuarios();  // Función que recarga la lista de usuarios
+            cargarUsuarios();  
+            
         }
     })
     .catch(error => console.error('Error al guardar usuario:', error));
 });
 
+
+$('#modalUsuario').on('hidden.bs.modal', function () {
+    document.getElementById('formUsuario').reset();
+});
 
 function eliminarUsuario(num_control) {
   if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
@@ -429,26 +434,12 @@ function toggleSemestre() {
   }
 }
 
-function toggleSemestreEditar() {
-  const rol = document.getElementById('editarRolUsuario').value;
-  const semestreField = document.getElementById('editarSemestreUsuario');
-  semestreField.disabled = false; 
-  if (rol === 'Tutor' || rol === 'Administrador') {
-    semestreField.value = '';  
-    semestreField.disabled = true; 
-  } else if (rol === 'Estudiante') {
-    semestreField.disabled = false;  
-  }
-}
 
 // Llama a toggleSemestre al cargar el modal para establecer el estado inicial
 document.addEventListener("DOMContentLoaded", () => {
   toggleSemestre();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  toggleSemestreEditar();
-});
 function abrirEditorUsuario(num_control) {
   // Solicitar los datos del usuario al backend
   fetch(`../Scripts/backend/obtener_usuario.php?num_control=${num_control}`)
@@ -502,9 +493,9 @@ function buscarUsuario() {
 
     // Verificar si el texto de búsqueda está en alguna de las columnas
     if (nombre.includes(textoBusqueda) || correo.includes(textoBusqueda) || rol.includes(textoBusqueda)) {
-      fila.style.display = '';  // Mostrar la fila
+      fila.style.display = ''; 
     } else {
-      fila.style.display = 'none';  // Ocultar la fila
+      fila.style.display = 'none';  
     }
   });
 }
@@ -525,7 +516,6 @@ function cargarMonitorizacion() {
       document.getElementById('tutoriasTotales').textContent = data.tutoriasTotales;
       document.getElementById('usuariosActivos').textContent = data.usuariosActivosSemana;
 
-      // Llamar a la función para actualizar el gráfico
       actualizarGraficoUsuarios(data);
     })
     .catch(error => console.error('Error al cargar datos de monitorización:', error));
@@ -636,6 +626,30 @@ function cargarRendimientoTutores() {
 
 document.addEventListener("DOMContentLoaded", cargarRendimientoTutores);
 
+document.getElementById("btnExportarPDF").addEventListener("click", async () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.text("Reportes y Estadísticas", 10, 10);
+    doc.text("Estadísticas de Uso de la Plataforma", 10, 20);
+
+    // Extraer y añadir la tabla de Total de Tutorías
+    const tablaTotal = document.getElementById("tablaTotalTutorias").innerText;
+    doc.text("Total de Tutorías", 10, 30);
+    doc.text(tablaTotal || "Sin datos", 10, 40);
+
+    // Extraer y añadir la tabla de Rendimiento de Tutores
+    const tablaRendimiento = document.getElementById("tablaRendimientoTutores").innerText;
+    doc.text("Rendimiento de Tutores", 10, 60);
+    doc.text(tablaRendimiento || "Sin datos", 10, 70);
+
+    // Extraer y añadir la tabla de Satisfacción Promedio
+    const tablaSatisfaccion = document.getElementById("tablaSatisfaccionEstudiantes").innerText;
+    doc.text("Satisfacción Promedio de Estudiantes", 10, 90);
+    doc.text(tablaSatisfaccion || "Sin datos", 10, 100);
+
+    window.open(doc.output("bloburl"));
+});
 </script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 <?php
 // Incluye el archivo de conexión
 include("conexion.php");
-
 // Verifica si el formulario fue enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoge y sanitiza los datos del formulario
@@ -16,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha_nac = $_POST['fecha_nac'];
     $tipo_usuario = $_POST['tipo_usuario'];
 
-    // Fecha de registro automática (opcional)
+    // Fecha de registro automática 
     $fecha_registro = date("Y-m-d");
 
     // Validación de contraseñas

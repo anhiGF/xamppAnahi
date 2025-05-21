@@ -1,6 +1,5 @@
 <?php
 include("conexion.php");
-
 // Consulta para obtener solo los usuarios con el rol de "Tutor"
 $sql = "SELECT num_control, nombre, primer_apellido, segundo_apellido FROM Usuario WHERE tipo_usuario = 'Tutor'";
 $result = $conexion->query($sql);

@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("conexion.php");
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_tutoria'])) {
     $id_tutoria = intval($_POST['id_tutoria']);
     $titulo = $_POST['titulo'];

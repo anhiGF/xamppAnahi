@@ -9,10 +9,17 @@
       <label for="passwordLogin">Contraseña</label>
       <input type="password" class="form-control" name="contraseña" id="passwordLogin" placeholder="Contraseña" required>
     </div>
+
+    <!-- Google reCAPTCHA -->
+    <div class="g-recaptcha" data-sitekey="6LdZ0J4qAAAAAKa6L242e7Ou2ZHmNbtMzzGEE552"></div>
+
     <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
-    <!-- Enlace para recuperar la contraseña -->
+
     <p class="mt-3 text-center">
       <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
     </p>
   </form>
 </div>
+
+<!-- Incluir la biblioteca de reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

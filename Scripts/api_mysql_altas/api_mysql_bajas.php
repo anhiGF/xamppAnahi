@@ -1,6 +1,7 @@
 <?php
 
 include('conexion.php');
+$conexion = Conexion::getInstancia();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 

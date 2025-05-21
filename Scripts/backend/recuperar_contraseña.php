@@ -7,7 +7,6 @@ require 'vendor/phpmailer/phpmailer/src/SMTP.php';
 require 'vendor/phpmailer/phpmailer/src/Exception.php';
 
 include("conexion.php");
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['correo_electronico'])) {
     $correo_electronico = trim($_POST['correo_electronico']);
 
@@ -57,12 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['correo_electronico']))
             $mail->Body = "Hola,<br><br>Haz clic en el siguiente enlace para restablecer tu contraseña:<br><a href='$enlace'>$enlace</a><br><br>Este enlace expirará en 1 hora.";
 
             $mail->send();
-            echo "Correo de recuperación enviado. Revisa tu bandeja de entrada.";
+            echo "<script>alert('Correo de recuperación enviado. Revisa tu bandeja de entrada.');
+             window.location.href = '../../Index.html';</script>";
         } catch (Exception $e) {
-            echo "Error al enviar el correo: {$mail->ErrorInfo}";
+            echo "<script>alert('Error al enviar el correo: {$mail->ErrorInfo}');
+             window.location.href = '../../Index.html';</script>";
         }
     } else {
-        echo "No se encontró una cuenta con ese correo electrónico.";
+        echo "<script>alert('No se encontró una cuenta con ese correo electrónico');
+             window.location.href = '../../Index.html';</script>";
     }
 
     $stmt->close();

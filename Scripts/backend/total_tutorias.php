@@ -1,29 +1,24 @@
 <?php
 session_start();
 include("conexion.php");
-
-// Verifica si la sesión contiene el ID del usuario
 if (!isset($_SESSION['num_control'])) {
     echo json_encode(["error" => "Usuario no autenticado"]);
     exit();
 }
 
-// Prepara la consulta SQL para obtener el total de tutorías
-$sql = "SELECT COUNT(*) AS total_tutorias FROM Tutoria";
-$stmt = $conexion->prepare($sql);
-
-if (!$stmt) {
-    echo json_encode(["error" => "Error en la preparación de la consulta: " . $conexion->error]);
+// Llamar al procedimiento almacenado
+$sql = "CALL ObtenerTotalTutorias(@total)";
+if (!$conexion->query($sql)) {
+    echo json_encode(["error" => "Error en la ejecución del procedimiento: " . $conexion->error]);
     exit();
 }
 
-$stmt->execute();
-$result = $stmt->get_result();
+// Obtener el valor de la variable de salida
+$result = $conexion->query("SELECT @total AS total_tutorias");
 $row = $result->fetch_assoc();
 
 $totalTutorias = $row['total_tutorias'];
 
-$stmt->close();
 $conexion->close();
 
 // Envía los datos en formato JSON

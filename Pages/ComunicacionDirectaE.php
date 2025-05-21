@@ -125,32 +125,37 @@ $id_remitente = $_SESSION['num_control'];
     }
 
     function enviarMensaje() {
-      const contenido = document.getElementById('inputMensaje').value;
-      if (contenido.trim() === '' || !idDestinatario) {
-        console.error("Contenido vacío o destinatario no seleccionado.");
-        return;
+  const contenido = document.getElementById("inputMensaje").value.trim();
+  if (contenido === "" || !idDestinatario) {
+    console.error("Contenido vacío o destinatario no seleccionado.");
+    alert("Escribe un mensaje y selecciona un destinatario.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("contenido", contenido);
+  formData.append("id_destinatario", idDestinatario);
+
+  fetch("../Scripts/backend/enviar_mensaje.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        document.getElementById("inputMensaje").value = "";
+        cargarConversacion(); // Recarga los mensajes
+      } else {
+        alert(result.error || "No se pudo enviar el mensaje.");
+        console.error("Error al enviar mensaje:", result.error);
       }
+    })
+    .catch(error => {
+      console.error("Error al enviar mensaje:", error);
+      alert("Hubo un error inesperado. Intenta nuevamente.");
+    });
+}
 
-      const formData = new FormData();
-      formData.append('contenido', contenido);
-      formData.append('id_destinatario', idDestinatario);
-
-      fetch('../Scripts/backend/enviar_mensaje.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(result => {
-        if (result.success) {
-          document.getElementById('inputMensaje').value = '';
-          cargarConversacion(); // Recarga la conversación después de enviar
-        } else {
-          console.error(result.error || "Error desconocido al enviar el mensaje.");
-          alert(result.error || "No se pudo enviar el mensaje.");
-        }
-      })
-      .catch(error => console.error('Error al enviar mensaje:', error));
-    }
     fetch('navbarest.html')
       .then(response => response.text())
       .then(data => {

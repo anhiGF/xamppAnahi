@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("conexion.php");
-
 // Verifica si la sesión contiene el ID del estudiante
 if (!isset($_SESSION['num_control'])) {
     echo json_encode(["error" => "Usuario no autenticado"]);

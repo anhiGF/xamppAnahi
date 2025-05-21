@@ -1,6 +1,7 @@
 <?php
 
 include('conexion.php');
+$conexion = Conexion::getInstancia();
 
     //METODOS HTTP DE PETICION: POST, GET, PUT, PATCH, DELETE
     if($_SERVER['REQUEST_METHOD'] == 'POST'){

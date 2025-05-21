@@ -2,12 +2,24 @@
 session_start();
 include("conexion.php");
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recoge los datos del formulario de inicio de sesión
+    // Validación de reCAPTCHA
+    $captcha = $_POST['g-recaptcha-response'];
+    $secretKey = "6LdZ0J4qAAAAAJ390iTRDANRVq7QSfinq0HYhL1f";
+    $respuestaCaptcha = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha");
+    $resultado = json_decode($respuestaCaptcha, true);
+
+    if (!$resultado['success']) {
+        echo "<script>alert('Por favor verifica el CAPTCHA.'); window.location.href = '../../Index.html';</script>";
+        exit();
+    }
+
+    // Recoge los datos del formulario
     $correo_electronico = trim($_POST['correo_electronico']);
     $contraseña = $_POST['contraseña'];
 
-    // Prepara la consulta SQL para buscar al usuario
+    // Prepara la consulta SQL
     $sql = "SELECT num_control, nombre, tipo_usuario, contraseña FROM Usuario WHERE correo_electronico = ?";
     
     if ($stmt = $conexion->prepare($sql)) {
@@ -15,18 +27,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $stmt->store_result();
 
-        // Verifica si se encontró un usuario con ese correo electrónico
         if ($stmt->num_rows == 1) {
             $stmt->bind_result($num_control, $nombre, $tipo_usuario, $contraseña_hash);
             $stmt->fetch();
 
             // Verifica la contraseña
             if (password_verify($contraseña, $contraseña_hash)) {
-                // La contraseña es correcta, inicia la sesión
                 $_SESSION['num_control'] = $num_control;
                 $_SESSION['nombre'] = $nombre;
                 $_SESSION['tipo_usuario'] = $tipo_usuario;
-                $num_control = $_POST['num_control']; 
+
                 // Actualiza la última sesión
                 $sqlActualizarSesion = "UPDATE Usuario SET ultima_sesion = NOW() WHERE num_control = ?";
                 $stmtActualizar = $conexion->prepare($sqlActualizarSesion);
@@ -34,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtActualizar->execute();
                 $stmtActualizar->close();
 
-                // Redirige al usuario según su rol
+                // Redirige al usuario
                 if ($tipo_usuario == 'Tutor') {
                     header("Location: ../../Pages/panelPrincipalDelTutor.php");
                 } elseif ($tipo_usuario == 'Estudiante') {
@@ -42,19 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } elseif ($tipo_usuario == 'Administrador') {
                     header("Location: ../../Pages/AdministracionSistema.php");
                 }
-                
                 exit();
             } else {
-                // Contraseña incorrecta
-                echo "Contraseña incorrecta.";
+                echo "<script>alert('Contraseña incorrecta.'); window.location.href = '../../Index.html';</script>";
             }
         } else {
-            // No se encontró el usuario
-            echo "No se encontró una cuenta con ese correo electrónico.";
+            echo "<script>alert('No se encontró una cuenta con ese correo electrónico.'); window.location.href = '../../Index.html';</script>";
         }
 
         $stmt->close();
-         
     } else {
         echo "Error en la preparación de la consulta: " . $conexion->error;
     }

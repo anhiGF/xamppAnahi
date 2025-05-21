@@ -88,7 +88,7 @@
     <div class="container">
       <h1 class="jumbotron-heading">Gestión de Tutorías para el ITS Jerez</h1>
       <p class="lead">Conecta a estudiantes y tutores para mejorar el rendimiento académico con herramientas avanzadas de seguimiento y evaluación. correo:admin@tecjerez.edu.mx contraseña:admin</p>
-    <!--  <a href="#" class="btn btn-primary my-2" id="openRegistroEstudianteModal">Registrarse como Estudiante</a>
+   <!-- <a href="#" class="btn btn-primary my-2" id="openRegistroEstudianteModal">Registrarse como Estudiante</a>
       <a href="#" class="btn btn-secondary my-2" id="openRegistroTutorModal">Registrarse como Tutor</a>-->
    </div>
   </section>
@@ -226,3 +226,26 @@ $('#openLoginModal').on('click', function() {
 
 </body>
 </html>
+<!--RewriteEngine On
+RewriteRule ^([^/]+)$ index.php?page=$1 [L] esto va en htacces pero no halle en q 
+y esto en mi index : <?php
+$page = isset($_GET['page']) ? $_GET['page'] : 'home'; // Valor predeterminado 'home' si no se pasa el parámetro
+
+switch ($page) {
+    case 'tutorias':
+        include 'tutorias.php';
+        break;
+    case 'estudiantes':
+        include 'estudiantes.php';
+        break;
+    case 'buscar':
+        $query = isset($_GET['query']) ? $_GET['query'] : '';
+        include 'buscar.php?query=' . $query;
+        break;
+    default:
+        include 'home.php';
+        break;
+}
+?>
+
+-->

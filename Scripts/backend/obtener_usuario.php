@@ -1,6 +1,5 @@
 <?php
 include("conexion.php");
-
 if (isset($_GET['num_control'])) {
     $num_control = $_GET['num_control'];
 

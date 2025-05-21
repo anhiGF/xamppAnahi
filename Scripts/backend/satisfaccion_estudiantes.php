@@ -1,14 +1,14 @@
 <?php
 session_start();
 include("conexion.php");
-
 // Verifica si la sesión contiene el ID del usuario
 if (!isset($_SESSION['num_control'])) {
     echo json_encode(["error" => "Usuario no autenticado"]);
     exit();
 }
 
-$sql = "SELECT AVG(puntaje) AS satisfaccion_promedio FROM Evaluacion"; 
+// Llamar a la función almacenada
+$sql = "SELECT ObtenerSatisfaccionPromedio() AS satisfaccion_promedio"; 
 $stmt = $conexion->prepare($sql);
 
 if (!$stmt) {
@@ -26,5 +26,5 @@ $stmt->close();
 $conexion->close();
 
 header('Content-Type: application/json');
-echo json_encode(["satisfaccion_promedio" => number_format($satisfaccionPromedio, 2)]);  // Se formatea el promedio con 2 decimales
+echo json_encode(["satisfaccion_promedio" => number_format($satisfaccionPromedio, 2)]); 
 ?>

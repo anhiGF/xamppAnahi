@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("conexion.php");
-
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['num_control'])) {

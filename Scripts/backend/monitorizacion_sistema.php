@@ -1,6 +1,5 @@
 <?php
 include("conexion.php");
-
 // Contar el total de usuarios
 $sqlUsuariosTotales = "SELECT COUNT(*) as total FROM Usuario";
 $resultUsuariosTotales = $conexion->query($sqlUsuariosTotales);

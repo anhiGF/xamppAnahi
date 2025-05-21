@@ -1,39 +1,42 @@
 <?php
 header('Content-Type: application/json');
 
-// Conexión a la base de datos
-$servername = "localhost";
-$username = "root"; 
-$password = "ARNIAK123"; 
-$dbname = "tutorias";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
+include("conexion.php");
 
 // Verifica la conexión
-if ($conn->connect_error) {
-    die(json_encode(["success" => false, "message" => "Error de conexión: " . $conn->connect_error]));
+if ($conexion->connect_error) {
+    die(json_encode(["success" => false, "message" => "Error de conexión: " . $conexion->connect_error]));
 }
 
-// Consulta para obtener todos los usuarios
-$sql = "SELECT num_control, nombre, correo_electronico, tipo_usuario FROM usuario";
-$result = $conn->query($sql);
+// Consulta para obtener todos los usuarios (agregar los nuevos campos)
+$sql = "SELECT num_control, nombre, primer_apellido, segundo_apellido, correo_electronico, semestre, fecha_nac, tipo_usuario FROM usuario";
+$result = $conexion->query($sql);
 
-if ($result->num_rows > 0) {
+// Verifica si hay resultados
+if ($result && $result->num_rows > 0) {
     $users = [];
 
+    // Obtiene los datos de cada usuario y los agrega al array
     while ($row = $result->fetch_assoc()) {
         $users[] = [
             "num_control" => $row["num_control"],
             "nombre" => $row["nombre"],
-            "email" => $row["correo_electronico"],
-            "rol" => $row["tipo_usuario"]
+            "primer_apellido" => $row["primer_apellido"],
+            "segundo_apellido" => $row["segundo_apellido"],
+            "correo_electronico" => $row["correo_electronico"],
+            "semestre" => $row["semestre"],
+            "fecha_nac" => $row["fecha_nac"],
+            "tipo_usuario" => $row["tipo_usuario"]
         ];
     }
 
+    // Devuelve los datos de los usuarios en formato JSON
     echo json_encode(["success" => true, "users" => $users]);
 } else {
+    // Si no se encuentran usuarios, devuelve un mensaje de error
     echo json_encode(["success" => false, "message" => "No se encontraron usuarios."]);
 }
 
-$conn->close();
+// Cierra la conexión
+$conexion->close();
 ?>

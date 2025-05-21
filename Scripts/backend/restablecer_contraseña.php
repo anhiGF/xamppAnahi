@@ -1,6 +1,5 @@
 <?php
 include("conexion.php");
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['token']) && isset($_POST['nueva_contraseña'])) {
     $token = $_POST['token'];
     $nueva_contraseña = password_hash($_POST['nueva_contraseña'], PASSWORD_DEFAULT);

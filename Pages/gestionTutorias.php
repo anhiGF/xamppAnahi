@@ -170,9 +170,7 @@ function cargarTutorias() {
 }
 
 document.addEventListener("DOMContentLoaded", cargarTutorias);
-
 function reservarTutoria(event) {
-
   event.preventDefault();
 
   const formData = new FormData(document.getElementById('formReservarTutoria'));
@@ -183,19 +181,22 @@ function reservarTutoria(event) {
   })
   .then(response => response.text())
   .then(result => {
-    console.log("Resultado de la reserva:", result); 
+    console.log("Resultado de la reserva:", result);
 
-    cargarTutorias();
-
-    alert("Tutoría reservada con éxito");
-    
-    document.getElementById('formReservarTutoria').reset();
+    if (result.includes("éxito")) {
+      alert("Tutoría reservada con éxito");
+      cargarTutorias();  // Cargar nuevamente la tabla
+      document.getElementById('formReservarTutoria').reset();
+    } else {
+      alert("Error: " + result);
+    }
   })
   .catch(error => {
     console.error("Error al reservar la tutoría:", error);
     alert("Hubo un error al reservar la tutoría. Por favor, intenta nuevamente.");
   });
 }
+
 function buscarTutorias() {
   const input = document.getElementById('buscarTutoria').value.toLowerCase();
   const filas = document.getElementById('tablaSesiones').getElementsByTagName('tr');

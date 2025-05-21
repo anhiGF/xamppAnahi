@@ -1,6 +1,5 @@
 <?php
 include("conexion.php");
-
 if (isset($_GET['id_tutoria'])) {
     $id_tutoria = intval($_GET['id_tutoria']);
     $sql = "SELECT id_tutoria, titulo, descripcion, fecha, hora FROM Tutoria WHERE id_tutoria = ?";
